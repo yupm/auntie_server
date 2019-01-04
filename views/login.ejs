@@ -1,0 +1,109 @@
+<!doctype html> 
+<html lang="en"> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+        <meta name="description" content=""> 
+        <meta name="author" content=""> 
+        <title>Offcanvas template for Bootstrap</title>         
+        <!-- Bootstrap core CSS -->         
+        <link href="bucket/format/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+        <!-- Custom styles for this template -->         
+        <link href="bucket/format/css/auntie.css" rel="stylesheet"> 
+    </head>     
+    <body class="bg-light"> 
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-danger"> 
+            <a class="navbar-brand mr-auto mr-lg-0" href="#">Auntie</a> 
+            <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas"> 
+                <span class="navbar-toggler-icon"></span> 
+            </button>             
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault"> 
+                <form class="form-inline my-2 my-lg-0 mt-lg-0 mb-lg-0 ml-lg-5"> 
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> 
+                    <div class="dropdown"> 
+                        <button class="btn dropdown-toggle btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Location</button>                         
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> 
+                            <a class="dropdown-item" href="#">Action</a> 
+                            <a class="dropdown-item" href="#">Another action</a> 
+                            <a class="dropdown-item" href="#">Something else here</a> 
+                        </div>                         
+                    </div>                     
+                    <button class="btn my-2 my-sm-0 btn-light" type="submit">Search</button>                     
+                </form>                 
+                <ul class="navbar-nav ml-auto"> 
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/deals">Deals</a> 
+                    </li>                     
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="#">Events</a> 
+                    </li>                     
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/register">Register</a> 
+                    </li>                     
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/login">Login</a> 
+                    </li>    
+                    <li class="nav-item dropdown"> 
+                        <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Controls</a> 
+                        <div class="dropdown-menu" aria-labelledby="dropdown01"> 
+                            <a class="dropdown-item" href="#">Profile</a> 
+                            <a class="dropdown-item" href="#">Settings</a> 
+                            <a class="dropdown-item" href="#">Sign out</a> 
+                        </div>                         
+                    </li>                     
+                </ul>                 
+            </div>             
+        </nav>         
+        <div class="container"> 
+            <div class="row" style="height: 30px;"></div>             
+        </div>         
+        <main role="main" class="container" style="height: 100vh;"> 
+            <div class="row d-flex justify-content-center"> 
+                <form style="width: 600px;"> 
+                    <div class="form-group"> 
+                        <label for="exampleInputEmail1">Email address</label>                         
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/> 
+                    </div>                     
+                    <div class="form-group"> 
+                        <label for="exampleInputPassword1">Password</label>                         
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"/> 
+                    </div>                     
+                    <div class="form-check"> 
+                        <label class="form-check-label"> 
+                            <input type="checkbox" class="form-check-input">Remember me
+                        </label>                         
+                    </div>                     
+                    <button type="submit" class="btn btn-primary mt-3">Submit</button>                     
+                </form>                 
+            </div>             
+        </main>         
+        <footer class="my-5 pt-5 text-muted text-center text-small"> 
+            <p class="mb-1">&copy; 2019 Auntie.cc</p> 
+            <ul class="list-inline"> 
+                <li class="list-inline-item"> 
+                    <a href="#">Privacy</a> 
+                </li>                 
+                <li class="list-inline-item"> 
+                    <a href="#">Terms</a> 
+                </li>                 
+                <li class="list-inline-item"> 
+                    <a href="#">Support</a> 
+                </li>                 
+            </ul>             
+        </footer>         
+        <!-- Bootstrap core JavaScript
+    ================================================== -->         
+        <!-- Placed at the end of the document so the pages load faster -->         
+        <script src="assets/js/jquery.min.js"></script>         
+        <script src="assets/js/popper.js"></script>         
+        <script src="bootstrap/js/bootstrap.min.js"></script>         
+        <script>
+        $(document).ready(function () {
+            $('[data-toggle="offcanvas"]').on('click', function () {
+                $('.offcanvas-collapse').toggleClass('open');
+            });
+        });
+    </script>         
+    </body>     
+</html>
