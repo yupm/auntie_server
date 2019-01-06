@@ -1,0 +1,20 @@
+@media (min-width:992px) {
+    .title {
+        font-family: Lato;
+        font-size: 100px;
+        text-transform: uppercase;
+    }
+}
+
+.leadtext {
+    font-size: 24px;
+}
+
+.title:hover {
+    text-shadow: 7px 8px rgba(0, 0, 0, 0.32);
+}
+
+.site-wrapper-inner {
+    display: table-cell;
+    vertical-align: middle;
+}

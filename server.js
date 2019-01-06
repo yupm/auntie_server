@@ -33,6 +33,8 @@ app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer({ dest: '../public/upload/temp' }).single('file'));
 app.use('/bucket', express.static(path.join(__dirname, './public')));
+app.use('/assets', express.static(path.join(__dirname, '/assets')));
+
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 

@@ -13,7 +13,9 @@ module.exports = function(app, passport) {
 // normal routes ===============================================================
     // show the home page (will also have our login links)
     app.get('/', function(req, res) {
-        res.render('index.ejs');
+        res.render('index.ejs', {
+            user : req.user
+        });
     });
 
 
@@ -23,6 +25,22 @@ module.exports = function(app, passport) {
             user : req.user
         });
     });
+
+    // DEALS SECTION =========================
+    app.get('/deals', function(req, res) {
+        res.render('deals.ejs', {
+            user : req.user
+        });
+    });
+    
+    
+    // EVENTS SECTION =========================
+    app.get('/events', function(req, res) {
+        res.render('events.ejs', {
+            user : req.user
+        });
+    });
+
 
 
     // LOGOUT ==============================

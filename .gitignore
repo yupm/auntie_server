@@ -76,3 +76,4 @@ typings/
 .fusebox/
 
 public/
+assets/bootstrap/css/_pgbackup/*
