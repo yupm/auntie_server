@@ -75,7 +75,9 @@ module.exports = function(app) {
 
     app.post('/cloud/post', isLoggedIn, async (req, res)=>{
 
-        
+        console.log(req);
+        res.redirect('/');
+
     });
 
 }

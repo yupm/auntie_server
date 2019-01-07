@@ -10,24 +10,32 @@
         <!-- Bootstrap core CSS -->         
         <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet"> 
         <!-- Custom styles for this template -->         
-        <link href="assets/css/auntie.css" rel="stylesheet"> 
+        <link href="assets/auntie.css" rel="stylesheet"> 
+        <link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet"> 
+        <style>#my-image,
+#use {
+    display: none;
+}
+
+.bootstrap-tagsinput {
+    width: 100%;
+}</style>
     </head>     
     <body class="bg-light"> 
         <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-danger"> 
-            <a class="navbar-brand mr-auto mr-lg-0" href="/">Auntie</a> 
+            <a class="navbar-brand mr-auto mr-lg-0" href="#">Auntie</a> 
             <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas"> 
                 <span class="navbar-toggler-icon"></span> 
             </button>             
             <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault"> 
-                <form class="form-inline my-2 my-lg-0 mt-lg-0 mb-lg-0 ml-lg-5" action="/search" method="post"> 
+                <form class="form-inline my-2 my-lg-0 mt-lg-0 mb-lg-0 ml-lg-5"> 
                     <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> 
                     <div class="dropdown"> 
                         <button class="btn dropdown-toggle btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Location</button>                         
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> 
-                            <a class="dropdown-item" href="#">North</a> 
-                            <a class="dropdown-item" href="#">South</a> 
-                            <a class="dropdown-item" href="#">East</a> 
-                            <a class="dropdown-item" href="#">West</a> 
+                            <a class="dropdown-item" href="#">Action</a> 
+                            <a class="dropdown-item" href="#">Another action</a> 
+                            <a class="dropdown-item" href="#">Something else here</a> 
                         </div>                         
                     </div>                     
                     <button class="btn my-2 my-sm-0 btn-light" type="submit">Search</button>                     
@@ -37,50 +45,51 @@
                         <a class="nav-link" href="/deals">Deals</a> 
                     </li>                     
                     <li class="nav-item"> 
-                        <a class="nav-link" href="/events">Events</a> 
-                    </li>                
-                    <% if (!user) { %>
+                        <a class="nav-link" href="#">Events</a> 
+                    </li>                     
                     <li class="nav-item"> 
-                        <a class="nav-link" href="/register">Register</a> 
-                    </li>   
+                        <a class="nav-link" href="/events">Register</a> 
+                    </li>                     
                     <li class="nav-item"> 
-                        <a class="nav-link" href="/login">Login</a> 
-                    </li>    
-                    <% }  %>                  
-                    <% if (user) { %>
-                        <li class="nav-item dropdown "> 
-                            <a class="nav-link dropdown-toggle" href="/dashboard" id="dropdown01" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Controls</a> 
-                            <div class="dropdown-menu" aria-labelledby="dropdown01"> 
-                                <a class="dropdown-item" href="/profile">Profile</a> 
-                                <a class="dropdown-item" href="/settings">Settings</a> 
-                                <a class="dropdown-item" href="/logout">Log out</a> 
-                            </div>                         
-                        </li>                         
-                    <% }  %>
+                        <a class="nav-link" href="/events">Login</a> 
+                    </li>                     
+                    <li class="nav-item dropdown"> 
+                        <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Controls</a> 
+                        <div class="dropdown-menu" aria-labelledby="dropdown01"> 
+                            <a class="dropdown-item" href="#">Profile</a> 
+                            <a class="dropdown-item" href="#">Settings</a> 
+                            <a class="dropdown-item" href="#">Sign out</a> 
+                        </div>                         
+                    </li>                     
                 </ul>                 
             </div>             
-        </nav>                
+        </nav>         
         <div class="container"> 
             <div class="row" style="height: 30px;"></div>             
         </div>         
-        <main role="main" class="container"> 
-            <div class="row" style="height: 30vh;"> 
-</div>
-            <div class="row ">
-                <div class="col-10 offset-1">
-                    <div class="row justify-content-center mb-2">
-                        <h1 class="text-danger">Ask Auntie</h1>
+        <main role="main" class="container">
+            <div class="col-sm-6 offset-sm-3">
+                <h1><br>Upload item</h1>
+                <form action="/cloud/post" method="post" enctype="multipart/form-data">
+                    <div class="form-group">Listing Title&nbsp; &nbsp;&nbsp;
+                        <br>
+                        <input type="text" class="form-control" name="topics">
                     </div>
-                    <div class="row">
-                        <div style="width: 100%;">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for..."/>
-                                <span class="input-group-btn"> <button class="btn btn-secondary" type="button">Go!</button> </span>
-                            </div>
-                        </div>
-                    </div>                     
-                </div>
-            </div>             
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea type="text" rows="6" class="form-control" name="description"></textarea>
+                    </div>
+                    <div>
+                        <input type="file" id="file" name="file" accept="image/png, image/jpeg">
+                    </div>
+                    <div class="form-group">Tags
+                        <br>
+                        <input id='taginput' type='text' placeholder='Additional info' class='flexdatalist form-control' data-min-length='1' multiple='multiple' name='itemTags'>
+                    </div>
+                    <button id='subBtn' type="button" class="btn btn-lg btn-danger" onclick="submit()">Upload!</button>
+                </form>
+                <hr>
+            </div>
         </main>         
         <footer class="my-5 pt-5 text-muted text-center text-small"> 
             <p class="mb-1">&copy; 2019 Auntie.cc</p> 
@@ -102,12 +111,23 @@
         <script src="assets/js/jquery.min.js"></script>         
         <script src="assets/js/popper.js"></script>         
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>         
+        <script src="assets/js/jquery.flexdatalist.min.js"></script>
         <script>
         $(document).ready(function () {
             $('[data-toggle="offcanvas"]').on('click', function () {
                 $('.offcanvas-collapse').toggleClass('open');
             });
         });
+        
+         $(window).keydown(function(event){
+            if((event.keyCode == 13)) {
+                event.preventDefault();
+                return false;
+            }
+            });
+        });
+
+
     </script>         
     </body>     
 </html>
