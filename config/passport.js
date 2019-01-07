@@ -76,10 +76,14 @@ module.exports = function (passport) {
         function (req, email, password, done) {
             if (email)
                 email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
-            console.log("Function create user");
 
             // asynchronous
             process.nextTick(function () {
+
+                if (req.body.agreeTerms !== 'on') {
+                    return done(null, false, req.flash('signupMessage', 'You must accept the Terms and Conditions.'));
+                }
+
                 // if the user is not already logged in:
                 if (!req.user) {
                     User.findOne({ 'local.email': email }, function (err, user) {
@@ -101,7 +105,6 @@ module.exports = function (passport) {
                             newUser.companyProfile.cname = req.body.companyName;
                             newUser.companyProfile.city = req.body.inputCity;
                             newUser.companyProfile.postalCode = req.body.inputZip;
-
 
                             newUser.save(function (err) {
                                 if (err)
