@@ -11,6 +11,9 @@ var flash    = require('connect-flash');
 var multer = require('multer');
 var     path = require('path');
 require('./app/models/post');
+require('./app/models/event');
+require('./app/models/deal');
+require('./app/models/item');
 
 
 var morgan       = require('morgan');

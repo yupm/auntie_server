@@ -3,6 +3,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var axios = require('axios');
 
 // load up the user model
 var User = require('../app/models/user');
@@ -106,6 +107,10 @@ module.exports = function (passport) {
                             newUser.companyProfile.city = req.body.inputCity;
                             newUser.companyProfile.postalCode = req.body.inputZip;
 
+                            //Find geo coordinates of postal code
+                            axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${req.body.inputZip}&returnGeom=Y&getAddrDetails=N`)
+                                .then(response => console.log(response));
+                            //  data: { found: 1, totalNumPages: 1, pageNum: 1, results: [ [Object] ] } }
                             newUser.save(function (err) {
                                 if (err)
                                     return done(err);

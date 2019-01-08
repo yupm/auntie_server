@@ -1,51 +1,54 @@
 const mongoose = require('mongoose');
-const Post = mongoose.model('posts');
 var path = require('path');
 var fs = require('fs-extra');
 
+const Events = mongoose.model('events');
+const Item = mongoose.model('item');
+
+
 module.exports = function(app) {
     // POSTING SECTION =========================
-    app.get('/post', isLoggedIn, function(req, res) {
-        res.render('post.ejs');
+    app.get('/item', isLoggedIn, function(req, res) {
+        res.render('item.ejs',{
+            user : req.user
+        });
     });
 
-    app.post('/post', isLoggedIn, async (req, res)=>{
+    app.post('/item', isLoggedIn, async (req, res)=>{
         var saveImage = function () {
-            var possible = 'abcdefghijklmnopqrstuvwxyz0123456789',
-                folderPath = req.user.id + '/';
-            var imgUrl = folderPath
-            for (var i = 0; i < 20; i += 1) {
-                imgUrl += possible.charAt(Math.floor(Math.random() * possible.length));
-            }
-            
-            Post.find({ filename: imgUrl }, function (err, images) {
+            var folderPath = req.user.id + '/';
+            var ext = path.extname(req.file.originalname).toLowerCase();
+            var fileStub = folderPath + genUrl() + ext;
+            var targetPath = path.resolve('./public/upload/' + fileStub);
+            var imgUrl = '/bucket/upload/' + fileStub;
+    
+
+            Item.find({ filename: imgUrl }, function (err, images) {
                 if (images.length > 0) {
                     saveImage();
                 } else {
-                    var tempPath = req.file.path,
-                        ext = path.extname(req.file.originalname).toLowerCase(),
-                        
-                        targetPath = path.resolve('./public/upload/' + imgUrl + ext);
+                    var tempPath = req.file.path;
 
                     if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
                         fs.ensureDir('./public/upload/' + folderPath)
                         .then(() => {
                             console.log('success!');
+                            console.log(req.body);
 
                             fs.rename(tempPath, targetPath, function (err) {
                                 if (err) throw err;
         
-                                const { title, description, topics } = req.body;
-                                const posting = new Post({
+                                const { title, description, itemTags } = req.body;
+                                const listing = new Item({
                                     title,
                                     description,
-                                    filename: imgUrl + ext,
+                                    filename: imgUrl,
                                     poster: req.user.id,
-                                    topics: topics.split(',')
+                                    topics: itemTags.split(',')
                                 });
     
-                                posting.save(function (err, image) {
-                                    res.redirect('/board');
+                                listing.save(function (err, image) {
+                                    res.redirect('/');
                                 });
                             });
 
@@ -53,7 +56,6 @@ module.exports = function(app) {
                         .catch(err => {
                             console.error(err)
                         })
-
                     } else {
                         fs.unlink(tempPath, function () {
                             if (err) throw err;
@@ -67,21 +69,60 @@ module.exports = function(app) {
             });
 
         };
-
         saveImage();
-
     });
 
+    app.post('/events/recommend', async (req, res)=>{
+        var tempPath = req.file.path;
+        var ext = path.extname(req.file.originalname).toLowerCase();
+        var fileStub = genUrl() + ext;
+        var targetPath = path.resolve('./public/events/' + fileStub);
+        var imgUrl = '/bucket/events/' + fileStub;
 
-    app.post('/cloud/post', isLoggedIn, async (req, res)=>{
+        if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
+            fs.ensureDir('./public/events')
+            .then(() => {
 
-        console.log(req);
-        res.redirect('/');
+                fs.rename(tempPath, targetPath, function (err) {
+                    if (err) throw err;
 
+                    const activity = new Events({
+                        title: req.body.title,
+                        company: req.body.company,
+                        from: req.body.startDate,
+                        to: req.body.endDate,
+                        description: req.body.description,
+                        filename: imgUrl,
+                        url: req.body.eventUrl,
+                    });
+
+                    activity.save(function (err, image) {
+                        res.redirect('/events');
+                    });
+                });
+
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        } else {
+            fs.unlink(tempPath, function () {
+                if (err) throw err;
+                res.json(500, { error: 'Only image files are allowed.' });
+            });
+        }
     });
 
 }
 
+function genUrl(){
+    const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    var generateString = new Date().getTime().toString() + '-';
+    for (var i = 0; i < 10; i += 1) {
+        generateString += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return generateString;
+}
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {

@@ -4,7 +4,6 @@ const profileRoutes = require('./routes/profileRoutes');
 const publishRoutes = require('./routes/publishRoutes');
 
 module.exports = function(app, passport) {
-
     authRoutes(app, passport);
     boardRoutes(app);
     profileRoutes(app);
@@ -33,7 +32,6 @@ module.exports = function(app, passport) {
         });
     });
     
-    
     // EVENTS SECTION =========================
     app.get('/events', function(req, res) {
         res.render('events.ejs', {
@@ -41,6 +39,11 @@ module.exports = function(app, passport) {
         });
     });
 
+    app.get('/events/recommend', function(req, res) {
+        res.render('recommend.ejs', {
+            user : req.user
+        });
+    });
 
 
     // LOGOUT ==============================
@@ -48,13 +51,16 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
-    
+
+    app.get('/*', function(req, res) {
+        res.json(404, { error: '404 not found.' });
+    });
 };
 
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
-   // if (req.isAuthenticated())
+    if (req.isAuthenticated())
         return next();
 
     res.redirect('/');

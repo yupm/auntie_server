@@ -5,6 +5,7 @@
     "server": "nodemon server.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bcrypt-nodejs": "latest",
     "body-parser": "~1.15.2",
     "connect-flash": "~0.1.1",
