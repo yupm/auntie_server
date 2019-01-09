@@ -109,16 +109,23 @@ module.exports = function (passport) {
 
                             //Find geo coordinates of postal code
                             axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${req.body.inputZip}&returnGeom=Y&getAddrDetails=N`)
-                                .then(response => console.log(response));
-                            //  data: { found: 1, totalNumPages: 1, pageNum: 1, results: [ [Object] ] } }
-                            newUser.save(function (err) {
-                                if (err)
-                                    return done(err);
-
-                                return done(null, newUser);
-                            });
+                                .then(response => {
+                                    if(response.data.results)
+                                    {
+                                        var coordinates = [];
+                                        console.log(response.data.results[0])
+                                        coordinates.push(response.data.results[0].LONGITUDE);
+                                        coordinates.push(response.data.results[0].LATITUDE);
+                                        newUser.companyProfile.geometry.coordinates = coordinates;
+                                    }
+                                    newUser.save(function (err) {
+                                        if (err)
+                                            return done(err);
+        
+                                        return done(null, newUser);
+                                    });
+                                });
                         }
-
                     });
                     // if the user is logged in but has no local account...
                 } else if (!req.user.local.email) {

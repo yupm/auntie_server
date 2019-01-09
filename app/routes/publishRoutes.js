@@ -4,6 +4,8 @@ var fs = require('fs-extra');
 
 const Events = mongoose.model('events');
 const Item = mongoose.model('item');
+var Hashids = require('hashids');
+var hashids = new Hashids('A hashing function for Auntie.cc2019');
 
 
 module.exports = function(app) {
@@ -16,9 +18,9 @@ module.exports = function(app) {
 
     app.post('/item', isLoggedIn, async (req, res)=>{
         var saveImage = function () {
-            var folderPath = req.user.id + '/';
+            var folderPath = hashids.encodeHex(req.user.id) + '/';
             var ext = path.extname(req.file.originalname).toLowerCase();
-            var fileStub = folderPath + genUrl() + ext;
+            var fileStub = folderPath + genItemString() + ext;
             var targetPath = path.resolve('./public/upload/' + fileStub);
             var imgUrl = '/bucket/upload/' + fileStub;
     
@@ -75,7 +77,7 @@ module.exports = function(app) {
     app.post('/events/recommend', async (req, res)=>{
         var tempPath = req.file.path;
         var ext = path.extname(req.file.originalname).toLowerCase();
-        var fileStub = genUrl() + ext;
+        var fileStub = genItemString() + ext;
         var targetPath = path.resolve('./public/events/' + fileStub);
         var imgUrl = '/bucket/events/' + fileStub;
 
@@ -115,7 +117,7 @@ module.exports = function(app) {
 
 }
 
-function genUrl(){
+function genItemString(){
     const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
     var generateString = new Date().getTime().toString() + '-';
     for (var i = 0; i < 10; i += 1) {

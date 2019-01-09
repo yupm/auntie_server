@@ -13,6 +13,7 @@ var userSchema = mongoose.Schema({
         uen: String,
         city: String,
         postalCode: String,
+        geometry: { type: { type: String, default:'Point' }, coordinates: [Number] },
         website: String,
         tel: String,
         companySize: Number,

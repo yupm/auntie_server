@@ -13,10 +13,18 @@ module.exports = function(app, passport) {
 
         // process the login form
         app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/', // redirect to the secure profile section
             failureRedirect : '/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
-        }));
+        }),  
+        function(req, res) {
+            console.log(req.body);
+            if (req.body.remember) {
+              req.session.cookie.maxAge = 180 * 24 * 60 * 60 * 1000; // Cookie expires after 30 days
+            } else {
+              req.session.cookie.expires = false; // Cookie expires at end of session
+            }
+        res.redirect('/');
+    });
 
 
         // REGISTER =================================

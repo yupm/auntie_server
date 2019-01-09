@@ -2,19 +2,32 @@ const authRoutes = require('./routes/authRoutes');
 const boardRoutes = require('./routes/boardRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const publishRoutes = require('./routes/publishRoutes');
+const searchRoutes = require('./routes/searchRoutes');
+
 
 module.exports = function(app, passport) {
     authRoutes(app, passport);
     boardRoutes(app);
     profileRoutes(app);
     publishRoutes(app);
-
+    searchRoutes(app);
+    
 // normal routes ===============================================================
     // show the home page (will also have our login links)
     app.get('/', function(req, res) {
-        res.render('index.ejs', {
-            user : req.user
-        });
+
+        if(req.user){
+            res.render('profile.ejs', {
+                user : req.user
+            });
+        }
+        else
+        {
+            res.render('index.ejs', {
+                user : req.user
+            });
+        };
+      
     });
 
 
