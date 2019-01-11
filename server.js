@@ -8,7 +8,6 @@ var port     = process.env.PORT || 8081;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
-var multer = require('multer');
 var     path = require('path');
 require('./app/models/post');
 require('./app/models/event');
@@ -34,7 +33,6 @@ app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(multer({ dest: '../public/upload/temp' }).single('file'));
 app.use('/bucket', express.static(path.join(__dirname, './public')));
 app.use('/assets', express.static(path.join(__dirname, '/assets')));
 

@@ -12,6 +12,7 @@
         <!-- Custom styles for this template -->         
         <link href="assets/auntie.css" rel="stylesheet"> 
         <link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet"> 
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.4.3/cropper.min.css" rel="stylesheet"> 
         <style>#my-image,
 #use {
     display: none;
@@ -75,7 +76,7 @@
         <main role="main" class="container">
             <div class="col-sm-6 offset-sm-3">
                 <h1><br>Upload item</h1>
-                <form action="/item" method="post" enctype="multipart/form-data">
+                <form id="formData1" action="/item" method="post" enctype="multipart/form-data">
                     <div class="form-group">Listing Title&nbsp; &nbsp;&nbsp;
                         <br>
                         <input type="text" class="form-control" name="topics">
@@ -85,15 +86,33 @@
                         <textarea type="text" rows="6" class="form-control" name="description"></textarea>
                     </div>
                     <div>
-                        <input type="file" id="file" name="file" accept="image/png, image/jpeg">
+                        <input type="file" id="fileUpload" name="file" accept="image/png, image/jpeg">
+                    </div>
+                    <div class="container mt-5">
+                        <div class="row">
+                            <div class="col-6 d-flex justify-content-center align-items-center" style="background-color: #d7d7d7; border-radius: 15px;">
+                                <div class="justify-content-center d-flex">
+                                    <img id="img1" src="assets/images/image.png" style="width: 50%; height: 50%;"/>
+                                    <input id="upload1" type="file" name="file" accept="image/png, image/jpeg" style="opacity: 0.0; position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%; cursor: pointer;" onchange="PreviewImage()">
+                                </div>
+                                <img id="imgPreview1" src="" style="position: absolute; width: 100%; height: 100%; display: none;"/>
+                            </div>
+                            <div class="col-6">
+                                <img id="img2" src="assets/images/upload-img.png" style="width: 100%;"/>
+                            </div>
+                        </div>
+                        <div>
+                            <img id="cropperImage" style="width: 100%;" src="1334859395411.jpg">
+                        </div>
                     </div>
                     <div class="form-group">Tags
                         <br>
                         <input id='taginput' type='text' placeholder='Additional info' class='flexdatalist form-control' data-min-length='1' multiple='multiple' name='itemTags'>
                     </div>
-                    <button id='subBtn' type="button" class="btn btn-lg btn-danger" onclick="submit()">Upload!</button>
+                    <button id='subBtn' type="button" class="btn btn-lg btn-danger" onclick="PostForm()">Upload!</button>
                 </form>
                 <hr>
+                <button type="button" class="btn btn-light" id="cropbtn">Crop</button>
             </div>
         </main>         
         <footer class="my-5 pt-5 text-muted text-center text-small"> 
@@ -117,6 +136,8 @@
         <script src="assets/js/popper.js"></script>         
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>         
         <script src="assets/js/jquery.flexdatalist.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.4.3/cropper.min.js"></script>
+
         <script>
         $(document).ready(function () {
             $('[data-toggle="offcanvas"]').on('click', function () {
@@ -124,13 +145,72 @@
             });
         });
         
-         $(window).keydown(function(event){
-            if((event.keyCode == 13)) {
-                event.preventDefault();
-                return false;
-            }
+        var cropper0;
+            
+        function PreviewImage() {
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById("upload1").files[0]);
+
+            oFReader.onload = function (oFREvent) {
+                console.log("Display img");
+                document.getElementById('cropperImage').src = oFREvent.target.result;
+                var image = document.getElementById('cropperImage');
+                cropper0 = new Cropper(image, {
+                    aspectRatio: 1 / 1,
+                    crop(event) {
+                        /*
+                        console.log(event.detail.x);
+                        console.log(event.detail.y);
+                        console.log(event.detail.width);
+                        console.log(event.detail.height);
+                        console.log(event.detail.rotate);
+                        console.log(event.detail.scaleX);
+                        console.log(event.detail.scaleY);*/
+                    },
+                });
+            };
+        };
+
+        var crop1;
+
+        function PostForm()
+        {
+            var data = new FormData($("form[id*='formData1']")[0]);
+            data.append('image_data', crop1, 'cropped.jpg');
+
+            $.ajax({
+                url: '/item',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                success: function(data){
+                //handle errors...
+                }
             });
-        });
+        };
+
+          var showImg = document.getElementById('imgPreview1');  
+          var formData  = document.getElementById('formData1');
+          $("#cropbtn").click(function() {
+               cropper0.getCroppedCanvas({
+                width: 160,
+                height: 90,
+                minWidth: 256,
+                minHeight: 256,
+                maxWidth: 4096,
+                maxHeight: 4096,
+                fillColor: '#fff',
+                imageSmoothingEnabled: false,
+                imageSmoothingQuality: 'high',
+              }).toBlob((blob) => {              
+                   const image1Url = URL.createObjectURL(blob);
+				   showImg.style.display = "block";
+                   showImg.src = image1Url;
+                   crop1 = blob;
+                });
+          });    
 
 
     </script>         

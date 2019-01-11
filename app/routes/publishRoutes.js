@@ -6,6 +6,9 @@ const Events = mongoose.model('events');
 const Item = mongoose.model('item');
 var Hashids = require('hashids');
 var hashids = new Hashids('A hashing function for Auntie.cc2019');
+var multer = require('multer');
+var upload = multer({ dest: '../public/upload/temp' });
+
 
 
 module.exports = function(app) {
@@ -16,15 +19,20 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/item', isLoggedIn, async (req, res)=>{
+    app.post('/item', isLoggedIn, upload.any(), async (req, res)=>{
+        console.log('success!');
+        console.log(req);
+
         var saveImage = function () {
+                      /*
             var folderPath = hashids.encodeHex(req.user.id) + '/';
             var ext = path.extname(req.file.originalname).toLowerCase();
             var fileStub = folderPath + genItemString() + ext;
             var targetPath = path.resolve('./public/upload/' + fileStub);
             var imgUrl = '/bucket/upload/' + fileStub;
-    
-
+            
+  
+            
             Item.find({ filename: imgUrl }, function (err, images) {
                 if (images.length > 0) {
                     saveImage();
@@ -34,8 +42,6 @@ module.exports = function(app) {
                     if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
                         fs.ensureDir('./public/upload/' + folderPath)
                         .then(() => {
-                            console.log('success!');
-                            console.log(req.body);
 
                             fs.rename(tempPath, targetPath, function (err) {
                                 if (err) throw err;
@@ -69,9 +75,11 @@ module.exports = function(app) {
                 }
 
             });
-
+*/
         };
         saveImage();
+        res.redirect('/');
+
     });
 
     app.post('/events/recommend', async (req, res)=>{
