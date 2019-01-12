@@ -7,31 +7,31 @@ const Item = mongoose.model('item');
 var Hashids = require('hashids');
 var hashids = new Hashids('A hashing function for Auntie.cc2019');
 var multer = require('multer');
-var upload = multer({ dest: '../public/upload/temp' });
+var upload = multer({ dest: './public/upload/temp' });
 
 
 
 module.exports = function(app) {
     // POSTING SECTION =========================
-    app.get('/item', isLoggedIn, function(req, res) {
+    app.get('/item', function(req, res) {
         res.render('item.ejs',{
             user : req.user
         });
     });
 
-    app.post('/item', isLoggedIn, upload.any(), async (req, res)=>{
+    app.post('/item', isLoggedIn, upload.fields([{ name: 'file', maxCount: 4 }, {name: 'cdata', maxCount: 4}]), async (req, res)=>{
         console.log('success!');
-        console.log(req);
+        console.log(req.files);
 
         var saveImage = function () {
-                      /*
             var folderPath = hashids.encodeHex(req.user.id) + '/';
-            var ext = path.extname(req.file.originalname).toLowerCase();
-            var fileStub = folderPath + genItemString() + ext;
-            var targetPath = path.resolve('./public/upload/' + fileStub);
-            var imgUrl = '/bucket/upload/' + fileStub;
+
             
-  
+            var ext = path.extname(req.file.originalname).toLowerCase();
+            var filepath = folderPath + genItemString() + ext;
+            var targetPath = path.resolve('./public/upload/' + filepath);
+            var imgUrl = '/bucket/upload/' + filepath;
+            
             
             Item.find({ filename: imgUrl }, function (err, images) {
                 if (images.length > 0) {
@@ -75,11 +75,11 @@ module.exports = function(app) {
                 }
 
             });
-*/
-        };
-        saveImage();
-        res.redirect('/');
 
+        };
+
+        saveImage();
+        res.json(200, { redirect: '/item' });
     });
 
     app.post('/events/recommend', async (req, res)=>{
@@ -136,10 +136,11 @@ function genItemString(){
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
-   // if (req.isAuthenticated())
-   console.log("In log in check");
-   console.log(req.user);
+   if (req.isAuthenticated())
+   {
+        console.log("In log in check");
+        console.log(req.user);
         return next();
-
+   }
     res.redirect('/');
 }
