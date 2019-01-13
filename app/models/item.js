@@ -5,8 +5,8 @@ var itemSchema = new Schema({
     title: String,
     owner: { type: Schema.Types.ObjectId, ref: 'user'},
     description: String,
-    filename: [String],
-    topPic: {type: Number, default: 0},
+    filenames: [String],
+    coverPic: {type: Number, default: 0},
     tags: [String],
     geometry: { type: { type: String, default:'Point' }, coordinates: [Number] }
 });
