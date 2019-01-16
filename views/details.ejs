@@ -1,0 +1,182 @@
+<!doctype html> 
+<html lang="en"> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+        <meta name="description" content=""> 
+        <meta name="author" content=""> 
+        <title>Offcanvas template for Bootstrap</title>         
+        <!-- Bootstrap core CSS -->         
+        <link href="../assets/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+        <link href="../assets/css/auntie.css" rel="stylesheet"> 
+        <style>#my-image,
+#use {
+    display: none;
+}
+
+.bootstrap-tagsinput {
+    width: 100%;
+}
+
+.gallery-wrap .img-small-wrap .item-gallery {
+    width: 60px;
+    height: 60px;
+    border: 1px solid #ddd;
+    margin: auto;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.gallery-wrap .img-small-wrap {
+    text-align: center;
+}
+
+.gallery-wrap .img-small-wrap img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: zoom-in;
+}</style>
+    </head>     
+    <body class="bg-light"> 
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-danger"> 
+            <a class="navbar-brand mr-auto mr-lg-0" href="/">Auntie</a> 
+            <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas"> 
+                <span class="navbar-toggler-icon"></span> 
+            </button>             
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault"> 
+                <form class="form-inline my-2 my-lg-0 mt-lg-0 mb-lg-0 ml-lg-5"> 
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> 
+                    <div class="dropdown"> 
+                        <button class="btn dropdown-toggle btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Location</button>                         
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> 
+                            <a class="dropdown-item" href="#">North</a> 
+                            <a class="dropdown-item" href="#">South</a> 
+                            <a class="dropdown-item" href="#">East</a> 
+                            <a class="dropdown-item" href="#">West</a> 
+                        </div>                         
+                    </div>                     
+                    <button class="btn my-2 my-sm-0 btn-light" type="submit">Search</button>                     
+                </form>                 
+                <ul class="navbar-nav ml-auto"> 
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/deals">Deals</a> 
+                    </li>                     
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/events">Events</a> 
+                    </li>                
+                    <% if (!user) { %>
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/register">Register</a> 
+                    </li>   
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/login">Login</a> 
+                    </li>    
+                    <% }  %>                  
+                    <% if (user) { %>
+                        <li class="nav-item dropdown "> 
+                            <a class="nav-link dropdown-toggle" href="/dashboard" id="dropdown01" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Controls</a> 
+                            <div class="dropdown-menu" aria-labelledby="dropdown01"> 
+                                <a class="dropdown-item" href="/profile">Profile</a> 
+                                <a class="dropdown-item" href="/settings">Settings</a> 
+                                <a class="dropdown-item" href="/logout">Log out</a> 
+                            </div>                         
+                        </li>                         
+                    <% }  %>
+                </ul>                 
+            </div>             
+        </nav>      
+        <div class="container"> 
+            <div class="row" style="height: 30px;"></div>             
+        </div>         
+        <main role="main" class="container">
+            <div class="card">
+                <div class="row">
+                    <aside class="col-sm-5" style="padding-right: 0;">
+                        <article class="gallery-wrap mr-2 ml-2"> 
+                            <div>
+                                <div class="mt-5"> 
+                                    <a href="#" class="">
+                                        <img id="mainImg" src="<%= listing.filenames[listing.coverPic] %>" style="width: 100%; height: auto;" class="img-thumbnail img-fluid">
+                                    </a>
+                                </div>
+                            </div>                             
+                            <!-- slider-product.// -->
+                            <hr>
+                            <div class="img-small-wrap mb-5">
+                                <% for(var i=0; i < listing.filenames.length; i++) { %>
+                                    <div class="item-gallery ml-1 mr-1"> 
+                                            <div class="d-flex align-items-center" style="width: 100%; height: 100%;">
+                                                <img class="timg" src="<%= listing.filenames[i] %>"> 
+                                            </div>
+                                        </div>
+                                <% } %>
+                            </div>                             
+                            <!-- slider-nav.// -->
+                        </article>                         
+                        <!-- gallery-wrap .end// -->
+                    </aside>
+                    <aside class="col-sm-7 border-left">
+                        <article class="card-body p-5">
+                            <h3 class="title mb-3"><%= listing.title %></h3> 
+                            <!-- price-detail-wrap .// -->
+                            <dl class="item-property">
+                                <dt>Description</dt>
+                                <dd>
+                                    <p><%= listing.description %></p>
+                                </dd>
+                            </dl>
+                            <dl class="param param-feature">
+                                <dt class="pr-auto">Model#</dt>
+                                <dd>12345611</dd>
+                            </dl>                             
+                            <dl class="param param-feature">
+                                <dt>Color</dt>
+                                <dd>Black and white</dd>
+                            </dl>                             
+                            <dl class="param param-feature">
+                                <dt>Location</dt>
+                                <dd>Russia, USA, and Europe</dd>
+                            </dl>                             
+                            <hr>
+                            <a href="#" class="btn btn-lg btn-primary text-uppercase">Contact seller</a>
+                        </article>                         
+                    </aside>                     
+                </div>                 
+            </div>             
+        </main>         
+        <footer class="my-5 pt-5 text-muted text-center text-small"> 
+            <p class="mb-1">&copy; 2019 Auntie.cc</p> 
+            <ul class="list-inline"> 
+                <li class="list-inline-item"> 
+                    <a href="#">Privacy</a> 
+                </li>                 
+                <li class="list-inline-item"> 
+                    <a href="#">Terms</a> 
+                </li>                 
+                <li class="list-inline-item"> 
+                    <a href="#">Support</a> 
+                </li>                 
+            </ul>             
+        </footer>         
+        <script src="../assets/js/jquery.min.js"></script>         
+        <script src="../assets/js/popper.js"></script>         
+        <script src="../assets/bootstrap/js/bootstrap.min.js"></script>         
+        <script>
+        $(document).ready(function () {
+            $('[data-toggle="offcanvas"]').on('click', function () {
+                $('.offcanvas-collapse').toggleClass('open');
+            });
+        });
+            
+        $('.timg').on('click', function() {
+            console.log($(this)[0].src);
+			 document.getElementById("mainImg").src = $(this)[0].src;
+
+        });    
+		
+    	</script>         
+    </body>     
+</html>

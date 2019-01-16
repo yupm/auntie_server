@@ -4,7 +4,6 @@ const profileRoutes = require('./routes/profileRoutes');
 const publishRoutes = require('./routes/publishRoutes');
 const searchRoutes = require('./routes/searchRoutes');
 
-
 module.exports = function(app, passport) {
     authRoutes(app, passport);
     boardRoutes(app);
@@ -15,16 +14,13 @@ module.exports = function(app, passport) {
 // normal routes ===============================================================
     // show the home page (will also have our login links)
     app.get('/', function(req, res) {
-
         if(req.user){
-            res.render('profile.ejs', {
-                user : req.user
-            });
+            res.redirect('/dash');
         }
         else
         {
             res.render('index.ejs', {
-                user : req.user
+                user : req.user,
             });
         };
       
@@ -44,6 +40,7 @@ module.exports = function(app, passport) {
             user : req.user
         });
     });
+
     
     // EVENTS SECTION =========================
     app.get('/events', function(req, res) {

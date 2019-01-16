@@ -9,7 +9,6 @@ var eventSchema = new Schema({
     description: String,
     filename: String,
     url: String,
-
     poster: { type: Schema.Types.ObjectId, ref: 'user'},
     anon: {
         name: String,

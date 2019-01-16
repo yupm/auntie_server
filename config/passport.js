@@ -7,6 +7,7 @@ var axios = require('axios');
 
 // load up the user model
 var User = require('../app/models/user');
+var Corp = require('../app/models/company');
 
 // load the auth variables
 var configAuth = require('./auth'); // use this one for testing
@@ -26,7 +27,9 @@ module.exports = function (passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function (id, done) {
-        User.findById(id, function (err, user) {
+        User.findById(id)
+        .populate('company')
+        .exec(function (err, user) {
             done(err, user);
         });
     });
@@ -103,26 +106,41 @@ module.exports = function (passport) {
                             newUser.local.email = email;
                             newUser.local.password = newUser.generateHash(password);
                             newUser.type = req.body.inputBizType;
-                            newUser.companyProfile.cname = req.body.companyName;
-                            newUser.companyProfile.city = req.body.inputCity;
-                            newUser.companyProfile.postalCode = req.body.inputZip;
-
+                            
+                            var usrCompany = new Corp();
+                            usrCompany.name = req.body.companyName;
+                            usrCompany.city = req.body.inputCity;
+                            usrCompany.postalCode = req.body.inputZip;
                             //Find geo coordinates of postal code
                             axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${req.body.inputZip}&returnGeom=Y&getAddrDetails=N`)
                                 .then(response => {
+                                    var coordinates = [];
                                     if(response.data.results)
                                     {
-                                        var coordinates = [];
                                         console.log(response.data.results[0])
                                         coordinates.push(response.data.results[0].LONGITUDE);
                                         coordinates.push(response.data.results[0].LATITUDE);
-                                        newUser.companyProfile.geometry.coordinates = coordinates;
                                     }
+                                    else{
+                                        //Push defaults
+                                        coordinates.push(103.851959);
+                                        coordinates.push(1.290270);
+                                    }
+                                    usrCompany.geometry.coordinates = coordinates;
+                                    newUser.company = usrCompany;
+                                    
                                     newUser.save(function (err) {
                                         if (err)
+                                        {
                                             return done(err);
-        
-                                        return done(null, newUser);
+                                        }
+                                            usrCompany.owner = newUser;
+                                            usrCompany.save(function(err){
+                                                if (err){
+                                                    return done(err);
+                                                }
+                                                return done(null, newUser);
+                                            });    
                                     });
                                 });
                         }

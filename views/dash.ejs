@@ -1,0 +1,144 @@
+<!doctype html> 
+<html lang="en"> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+        <meta name="description" content=""> 
+        <meta name="author" content=""> 
+        <title>Offcanvas template for Bootstrap</title>         
+        <!-- Bootstrap core CSS -->         
+        <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+        <!-- Custom styles for this template -->         
+        <link href="assets/css/auntie.css" rel="stylesheet"> 
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+        <style>.app-fab--absolute {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+}
+
+@media (min-width: 1024px) {
+    .app-fab--absolute {
+        bottom: 1.5rem;
+        right: 1.5rem;
+    }
+}</style>
+    </head>     
+    <body class="bg-light"> 
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-danger"> 
+            <a class="navbar-brand mr-auto mr-lg-0" href="/">Auntie</a> 
+            <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas"> 
+                <span class="navbar-toggler-icon"></span> 
+            </button>             
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault"> 
+                <form class="form-inline my-2 my-lg-0 mt-lg-0 mb-lg-0 ml-lg-5"> 
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> 
+                    <div class="dropdown"> 
+                        <button class="btn dropdown-toggle btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Location</button>                         
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> 
+                            <a class="dropdown-item" href="#">North</a> 
+                            <a class="dropdown-item" href="#">South</a> 
+                            <a class="dropdown-item" href="#">East</a> 
+                            <a class="dropdown-item" href="#">West</a> 
+                        </div>                         
+                    </div>                     
+                    <button class="btn my-2 my-sm-0 btn-light" type="submit">Search</button>                     
+                </form>                 
+                <ul class="navbar-nav ml-auto"> 
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/deals">Deals</a> 
+                    </li>                     
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/events">Events</a> 
+                    </li>                
+                    <% if (!user) { %>
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/register">Register</a> 
+                    </li>   
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/login">Login</a> 
+                    </li>    
+                    <% }  %>                  
+                    <% if (user) { %>
+                        <li class="nav-item dropdown "> 
+                            <a class="nav-link dropdown-toggle" href="/dashboard" id="dropdown01" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Controls</a> 
+                            <div class="dropdown-menu" aria-labelledby="dropdown01"> 
+                                <a class="dropdown-item" href="/profile">Profile</a> 
+                                <a class="dropdown-item" href="/settings">Settings</a> 
+                                <a class="dropdown-item" href="/logout">Log out</a> 
+                            </div>                         
+                        </li>                         
+                    <% }  %>
+                </ul>                 
+            </div>             
+        </nav>          
+        <div class="container"> 
+            <div class="row" style="height: 30px;"></div>             
+        </div>         
+        <button class="mdc-fab app-fab--absolute bg-danger" aria-label="add" onclick="location.href='/item';">
+            <span class="mdc-fab__icon material-icons">add</span>
+        </button>
+        <main role="main" class="container"> 
+            <div class="row"> 
+                <div class="col-lg-9 col-md-12"> 
+                    <% if(listings.length > 0) {%>
+                    <div class="card">
+                        <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Cover</th>
+                                        <th scope="col" class="">List Name</th>
+                                        <th scope="col" class="text-right">Options</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(var i=0; i < listings.length; i++) { %>
+                                        <tr class='clickable-row' data-href='/details/<%= listings[i].url %>'> 
+                                                <th scope="row" class="align-middle"><%= i + 1 %></th>
+                                                <td style="width: 100px;">
+                                                    <img src=<%= listings[i].filenames[listings[i].coverPic] %> class="img-fluid align-middle">
+                                                </td>
+                                                <td class="align-middle "><%= listings[i].title %></td>
+                                                <td class="text-right align-middle">
+                                                    <a class="btn btn-sm btn-outline-info" href="/details/<%= listings[i].url %>"><i class="fas fa-info-circle"></i>Details</a> 
+                                                    <a class="btn btn-sm btn-danger" href="#"><i class="fas fa-trash-alt"></i>Delete</a> 
+                                                </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>                 
+                    <% } else { %> 
+
+                    <% } %> 
+
+                    </div>
+                </div>                 
+                <div class="col-md-3 offcanvas-collapse"> 
+                </div>
+            </div>             
+        </main>         
+        <!-- Bootstrap core JavaScript
+    ================================================== -->         
+        <!-- Placed at the end of the document so the pages load faster -->         
+        <script src="assets/js/jquery.min.js"></script>         
+        <script src="assets/js/popper.js"></script>         
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+        <script>
+        $(document).ready(function () {
+            $('[data-toggle="offcanvas"]').on('click', function () {
+                $('.offcanvas-collapse').toggleClass('open');
+            });
+        });
+
+        jQuery(document).ready(function($) {
+        $(".clickable-row").click(function() {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>         
+    </body>     
+</html>

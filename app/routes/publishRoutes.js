@@ -6,6 +6,8 @@ const Events = mongoose.model('events');
 const Item = mongoose.model('item');
 var Hashids = require('hashids');
 var hashids = new Hashids('A hashing function for Auntie.cc2019');
+var hashurls = new Hashids('Short and sweet');
+
 var multer = require('multer');
 var upload = multer({ dest: './public/upload/temp' });
 var async = require('async');
@@ -79,24 +81,31 @@ module.exports = function(app) {
               }
             } else {
                 console.log('All files have been processed successfully');
-
+                var collectionCount = 0;
+                Item.estimatedDocumentCount(function(error, result){
+                    if(error) throw error;
+                    collectionCount = result;
+                });
                 const { title, description, itemTags } = req.body;
+                const url = convertToSlug(title) + '-' + hashurls.encode(collectionCount);
                 const listing = new Item({
                     title,
                     description,
                     owner: req.user.id,
+                    url,
                     filenames: pathToUrls,
                     tags: itemTags.split(','),
-                    geometry: req.user.companyProfile.geometry
+                    geometry: req.user.company.geometry
                 });
-            
-                listing.save(function (err, image) {333333
+                console.log("Saving");
+
+                listing.save(function (err, image) {
                     if(err){
                         console.log("TODO");
                         res.status(500).json( { redirect: '/item' });
 
                     }else{
-                        res.status(200).json( { redirect: '/item' });
+                        res.status(200).json( { redirect: '/' });
                     }
                 });
         
@@ -149,6 +158,46 @@ module.exports = function(app) {
         }
     });
 
+
+
+    // DASHBOARD SECTION =========================
+    app.get('/dash', async(req, res)=>  {
+        const listings = await Item.find({owner: req.user.id});
+
+        res.render('dash.ejs', {
+            user : req.user,
+            listings
+        });
+    });
+
+    //DETAILS SECTION =========================
+   /* app.get('/details/:url', function(req, res) {
+        Item.findOne({ url: req.params.url },
+            function (err, pitem) {
+                if (err) { throw err; }
+                if (pitem) {
+                    pitem.views = pitem.views + 1;
+                    pitem.save();
+                    res.render('details.ejs', {
+                        user : req.user,
+                        listing: pitem
+                    });
+                }
+                else {
+                    res.redirect('/');
+                }
+            });
+
+    });   */
+
+    app.get('/details/:url', async(req, res)=> {  
+        const listing = await Item.findOne({ url: req.params.url}).populate('owner');
+        res.render('details.ejs', {
+            user : req.user,
+            listing
+        });
+    });
+
 }
 
 function genItemString(){
@@ -167,4 +216,13 @@ function isLoggedIn(req, res, next) {
         return next();
    }
     res.redirect('/');
+}
+
+function convertToSlug(RawSlug)
+{
+    return RawSlug
+        .toLowerCase()
+        .replace(/[^\w ]+/g,'')
+        .replace(/ +/g,'-')
+        ;
 }

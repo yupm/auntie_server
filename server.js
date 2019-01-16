@@ -13,6 +13,7 @@ require('./app/models/post');
 require('./app/models/event');
 require('./app/models/deal');
 require('./app/models/item');
+require('./app/models/company');
 
 
 var morgan       = require('morgan');
@@ -41,7 +42,7 @@ app.set('view engine', 'ejs'); // set up ejs for templating
 
 // required for passport
 app.use(session({
-    secret: 'iwantagoodjobthatpays$100001235821dollars', // session secret
+    secret: 'dear@untie$helpMeFinD!MyS7277', // session secret
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({mongooseConnection: mongoose.connection })

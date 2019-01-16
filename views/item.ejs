@@ -74,18 +74,38 @@
             <div class="row" style="height: 30px;"></div>             
         </div>         
         <main role="main" class="container">
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">   
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                    <div class="modal-body">
+                        <p>Some text in the modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                    </div>      
+                </div>
+            </div>
+            <!-- Modal end -->
+
             <div class="col-sm-6 offset-sm-3">
                 <h1><br>Upload item</h1>
                 <form id="formData1" action="/item" method="post" enctype="multipart/form-data">
                     <div class="form-group">Listing Title&nbsp; &nbsp;&nbsp;
                         <br>
-                        <input type="text" class="form-control" name="topics">
+                        <input type="text" class="form-control" name="title">
                     </div>
                     <div class="form-group">
                         <label>Description</label>
                         <textarea type="text" rows="6" class="form-control" name="description"></textarea>
                     </div>
                     <div class="container mt-5">
+                        <div>
+                                <img id="cropperImage" style="width: 100%;" src="">
+                                <button type="button" class="btn btn-danger" id="cropbtn">Crop</button>
+                        </div>
                         <div class="row">
                             <div class="d-flex justify-content-center align-items-center col-6 " style="padding-top: 50%;">
                                 <div style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; display: none; background-color: #d7d7d7; border-radius: 15px;" class="d-inline-flex justify-content-center align-items-center m-1">
@@ -126,11 +146,7 @@
                                     </div>                            
                                 </div>
                             </div>
-                        <div>
-                            <img id="cropperImage" style="width: 100%;" src="1334859395411.jpg">
-                        </div>
                     </div>
-                    <button type="button" class="btn btn-danger" id="cropbtn">Crop</button>
                     <div class="form-group">Tags
                         <br>
                         <input id='taginput' type='text' placeholder='Additional info' class='flexdatalist form-control' data-min-length='1' multiple='multiple' name='itemTags'>
