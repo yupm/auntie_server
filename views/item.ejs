@@ -76,14 +76,17 @@
         <main role="main" class="container">
             <!-- Modal -->
             <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog">   
+                <div class="modal-dialog modal-lg">   
                     <!-- Modal content-->
                     <div class="modal-content">
                     <div class="modal-body">
-                        <p>Some text in the modal.</p>
-                    </div>
+                        <div style="width: 100%;">
+                            <img id="cropperImage" style="width: 100%;" src="">
+                        </div>
+                    </div>                   
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" id="cropbtn">Crop</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     </div>
                     </div>      
                 </div>
@@ -102,10 +105,6 @@
                         <textarea type="text" rows="6" class="form-control" name="description"></textarea>
                     </div>
                     <div class="container mt-5">
-                        <div>
-                                <img id="cropperImage" style="width: 100%;" src="">
-                                <button type="button" class="btn btn-danger" id="cropbtn">Crop</button>
-                        </div>
                         <div class="row">
                             <div class="d-flex justify-content-center align-items-center col-6 " style="padding-top: 50%;">
                                 <div style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; display: none; background-color: #d7d7d7; border-radius: 15px;" class="d-inline-flex justify-content-center align-items-center m-1">
@@ -192,10 +191,6 @@
         });
 
         $('input').on('change', function() {
-            console.log( this.files[0].name );
-            console.log( this.files[0].type );
-            console.log( this.id );
-
             curPos = this.id.match(/\d+/)[0];
 
             var index = inputInfo.map(function(e) { return e.id; }).indexOf(curPos);
@@ -205,7 +200,6 @@
                 inputInfo[index].name = 'c-' + this.files[0].name;
                 inputInfo[index].type = this.files[0].type;
             }
-
 
             var oFReader = new FileReader();
             oFReader.readAsDataURL(this.files[0]);
@@ -217,10 +211,10 @@
             oFReader.onload = function (oFREvent) {
                 document.getElementById('cropperImage').src = oFREvent.target.result;
                 var image = document.getElementById('cropperImage');
-                console.log( "new cropper!");
                 cropper0 = new Cropper(image, {
                     aspectRatio: 1 / 1
                 });
+                $('#myModal').modal('show');
             };   
         });
         
