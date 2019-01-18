@@ -21,18 +21,9 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/item', isLoggedIn, upload.fields([{ name: 'file', maxCount: 4 }, {name: 'cdata', maxCount: 4}]), async (req, res)=>{
+    app.post('/item', isLoggedIn,  upload.fields([{name: 'cdata', maxCount: 4}]), async (req, res)=>{
         console.log('success!');
-    
-        for(var i =0; i < req.files.file.length; i++){
-            console.log(req.files.file[i].originalname);
-            fs.unlink(req.files.file[i].path, (err) => {
-                if (err) throw err;
-                console.log('path/file.txt was deleted');
-            });         
-        };
-
-        console.log("I promise you"); 
+        console.log(req);
 
         var folderPath = hashids.encodeHex(req.user.id) + '/';
         var pathToUrls = [];
