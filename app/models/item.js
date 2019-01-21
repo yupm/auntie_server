@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 var itemSchema = new Schema({
     title: String,
-    owner: { type: Schema.Types.ObjectId, ref: 'user'},
+    company: { type: Schema.Types.ObjectId, ref: 'company'},
     description: String,
     url: String,
     views: { type: Number, default : 0 },

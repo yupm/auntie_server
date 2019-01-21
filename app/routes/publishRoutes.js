@@ -82,7 +82,7 @@ module.exports = function(app) {
                 const listing = new Item({
                     title,
                     description,
-                    owner: req.user.id,
+                    company: req.user.company,
                     url,
                     filenames: pathToUrls,
                     tags: itemTags.split(','),
@@ -153,8 +153,7 @@ module.exports = function(app) {
 
     // DASHBOARD SECTION =========================
     app.get('/dash', async(req, res)=>  {
-        const listings = await Item.find({owner: req.user.id});
-
+        const listings = await Item.find({company: req.user.company});
         res.render('dash.ejs', {
             user : req.user,
             listings
@@ -162,25 +161,6 @@ module.exports = function(app) {
     });
 
     //DETAILS SECTION =========================
-   /* app.get('/details/:url', function(req, res) {
-        Item.findOne({ url: req.params.url },
-            function (err, pitem) {
-                if (err) { throw err; }
-                if (pitem) {
-                    pitem.views = pitem.views + 1;
-                    pitem.save();
-                    res.render('details.ejs', {
-                        user : req.user,
-                        listing: pitem
-                    });
-                }
-                else {
-                    res.redirect('/');
-                }
-            });
-
-    });   */
-
     app.get('/details/:url', async(req, res)=> {  
         const listing = await Item.findOne({ url: req.params.url}).populate('owner');
         res.render('details.ejs', {
