@@ -17,7 +17,7 @@ module.exports = function(app, passport) {
             failureFlash : true // allow flash messages
         }),  
         function(req, res) {
-            console.log(req.body);
+            console.log("I have found user!");
             if (req.body.remember) {
               req.session.cookie.maxAge = 180 * 24 * 60 * 60 * 1000; // Cookie expires after 30 days
             } else {

@@ -9,8 +9,8 @@ var userSchema = mongoose.Schema({
     type: String,
     company: { type: Schema.Types.ObjectId, ref: 'company'},
     local            : {
-        email        : { type: String, select: false},
-        password     : { type: String, select: false},
+        email        : String,
+        password     : String,
         select: false
     },
     facebook         : {

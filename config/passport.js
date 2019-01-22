@@ -44,13 +44,17 @@ module.exports = function (passport) {
         passReqToCallback: true // allows us to pass in the req from our route (lets us check if a user is logged in or not)
     },
         function (req, email, password, done) {
+            console.log("In login");
             if (email)
                 email = email.toLowerCase(); // Use lower-case e-mails to avoid case-sensitive e-mail matching
 
             // asynchronous
             process.nextTick(function () {
+                console.log("Finding one");
                 User.findOne({ 'local.email': email }, function (err, user) {
                     // if there are any errors, return the error
+                    console.log(user);
+                    console.log("In find one");
                     if (err)
                         return done(err);
                     // if no user is found, return the message
