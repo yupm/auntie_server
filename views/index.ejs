@@ -19,8 +19,8 @@
                 <span class="navbar-toggler-icon"></span> 
             </button>             
             <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault"> 
-                <form class="form-inline my-2 my-lg-0 mt-lg-0 mb-lg-0 ml-lg-5" action="/search" method="post"> 
-                    <input name="se" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> 
+                <form class="form-inline my-2 my-lg-0 mt-lg-0 mb-lg-0 ml-lg-5" action="/search" method="get"> 
+                    <input name="q" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> 
                     <div class="dropdown"> 
                         <button class="btn dropdown-toggle btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Location</button>                         
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> 
@@ -73,9 +73,9 @@
                     </div>
                     <div class="row">
                         <div style="width: 100%;">
-                        <form action="/search" method="post">
+                        <form action="/search" method="get">
                             <div class="input-group">
-                                    <input name="searchInput" type="text" class="form-control" placeholder="Search for..." aria-label="Search for..."/>
+                                    <input name="q" type="text" class="form-control" placeholder="Search for..." aria-label="Search for..."/>
                                     <span class="input-group-btn"> <button class="btn btn-secondary" type="submit">Go!</button> </span>
                             </div>
                         </form>

@@ -85,12 +85,12 @@ curl -XDELETE localhost:9200/_all
 
 https://www.elastic.co/guide/en/kibana/current/tutorial-load-dataset.html
 
+
 PUT /corporate
 {
  "mappings": {
   "companies": {
    "properties": {
-	"_id": {"type": "keyword"},
     "name": {"type": "keyword"},
     "geometry.coordinates": {"type": "geo_point"}
    }
@@ -104,13 +104,41 @@ PUT /consumer
  "mappings": {
   "items": {
    "properties": {
-   	"_id": {"type": "keyword"},
+    "geometry.coordinates": {"type": "geo_point"}
+   }
+  }
+ }
+}
+
+
+
+PUT /corporate
+{
+ "mappings": {
+  "companies": {
+   "properties": {
+    "name": {"type": "keyword"},
+    "geometry.coordinates": {"type": "geo_point"}
+   }
+  }
+ }
+}
+
+
+PUT /consumer
+{
+ "mappings": {
+  "items": {
+   "properties": {
     "geometry.coordinates": {"type": "geo_point"},
 	"filenames" : { 
 		"type": "keyword",                
-		"enabled": false,
-        "include_in_all": false					
-		}
+        "index": false					
+	},
+	"coverPic" : { 
+		"type": "keyword",                
+        "index": false					
+	}
    }
   }
  }

@@ -13,7 +13,7 @@
 		},
 		"auntie.items":  {
 		   "rename": "consumer.items",
-		  "includeFields": ["_id","title", "description", "geometry.coordinates", "tags", "filenames"]
+		  "includeFields": ["_id","title", "description", "geometry.coordinates", "tags"]
 		}
 	},
 	  
