@@ -11,6 +11,9 @@ var client = new elasticsearch.Client({
 module.exports = function(app) {
     // SEARCH SECTION =========================
     app.get('/search', function(req, res) {
+        console.log("In get");
+        console.log(req.query);
+
          res.render('search.ejs', {
              user : req.user,
              results: ""
@@ -18,10 +21,13 @@ module.exports = function(app) {
      });
  
 
+
+
+
+
      app.post('/search', async(req, res) => {
         console.log("Searching");
         console.log(req.body);  
-
 
         const esSearch = await client.search({
             index: 'consumer',
@@ -29,7 +35,7 @@ module.exports = function(app) {
               query: {
                 multi_match: {
                     query: req.body.searchInput, 
-                    fuzziness: 2,
+                    fuzziness: 6,
                     prefix_length: 1,
                     fields: [ "tile", "description", "tags"] 
                 }
@@ -37,20 +43,22 @@ module.exports = function(app) {
             }
           });
           
-       // const results = await Item.find({ $text: { $search: req.body.searchInput } }).populate('company');
-
+        /*
         console.log(esSearch);
         for (const result of esSearch.hits.hits) {
             console.log('result:', result);
-        }
-
+        }*/
+        var obj_ids = esSearch.hits.hits.map(function(searchResult) { return mongoose.Types.ObjectId(searchResult._id); });
+        const results = await Item.find({_id: {$in: obj_ids}}).populate('company');
 
         res.render('search.ejs', {
             user : req.user,
-            results: ""
+            results
         });
 
     });
+
+
  }
  
 
