@@ -1,0 +1,32 @@
+{
+	"mainAddress": "localhost:27017",
+	"oplogFile": "oplog.timestamp",
+	"noDump": true,
+	"batchSize": -1,
+	"verbosity": 1,
+	"continueOnError": false,
+		
+	"namespaces": {
+		"auntie.companies":  {
+		  "rename": "corporate.companies",
+		  "includeFields": ["_id", "name", "geometry.coordinates"]
+		},
+		"auntie.items":  {
+		   "rename": "consumer.items",
+		  "includeFields": ["_id","title", "description", "geometry.coordinates", "tags", "filenames"]
+		}
+	},
+	  
+	  
+	"docManagers": [
+		{
+		  "docManager": "elastic2_doc_manager",
+		  "targetURL": "localhost:9200",
+		  "args": {
+			"clientOptions": {
+				"timeout": 200
+			}
+		  }        
+		 }
+	]
+}

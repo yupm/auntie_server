@@ -1,0 +1,117 @@
+mongod --replSet rs0 --port 27017 --bind_ip localhost --dbpath "C:\data\rs0db0" 
+mongod --replSet rs0 --port 27018 --bind_ip localhost --dbpath "C:\data\rs0db1" 
+mongod --replSet rs0 --port 27019 --bind_ip localhost --dbpath "C:\data\rs0db2" 
+
+mongo-connector -m localhost:27017 -t localhost:9200 --fields title,description -d elastic2_doc_manager
+mongo-connector -c "C:\Users\Adobe\AppData\Local\Programs\Python\Python36\Lib\site-packages\config.json"
+
+C:\Users\Adobe\Documents\kibana-5.6.14-windows-x86\bin
+
+
+GET _search
+{
+    "query": {
+        "match_all": {}
+    }
+
+}
+
+GET /_cat/indices?v
+
+
+
+
+GET /companies/_search
+{
+    "query": {
+        "match_all": {}
+    }
+
+}
+
+GET /_search
+{
+    "query": {
+        "match" : {
+            "description" : "coffee"
+        }
+    }
+}
+
+GET /consumer/_search
+{
+    "query": {
+        "match" : {
+          "description": {
+                "query": "cofee",
+                "fuzziness": 2,
+                "prefix_length": 1
+              }        
+        }
+    }
+
+}
+
+GET /consumer/_search
+{
+    "query": {
+        "match" : {
+          "tags": {
+                "query": "bowl",
+                "fuzziness": 2,
+                "prefix_length": 1
+              }        
+        }
+    }
+
+}
+
+
+GET /consumer/_search
+{
+  "query": {
+    "multi_match" : {
+      "query":    "chocolate", 
+      "fuzziness": 2,
+      "prefix_length": 1,
+      "fields": [ "tile", "description", "tags"] 
+    }
+  }
+}
+
+
+curl -XDELETE localhost:9200/_all
+
+
+https://www.elastic.co/guide/en/kibana/current/tutorial-load-dataset.html
+
+PUT /corporate
+{
+ "mappings": {
+  "companies": {
+   "properties": {
+	"_id": {"type": "keyword"},
+    "name": {"type": "keyword"},
+    "geometry.coordinates": {"type": "geo_point"}
+   }
+  }
+ }
+}
+
+
+PUT /consumer
+{
+ "mappings": {
+  "items": {
+   "properties": {
+   	"_id": {"type": "keyword"},
+    "geometry.coordinates": {"type": "geo_point"},
+	"filenames" : { 
+		"type": "keyword",                
+		"enabled": false,
+        "include_in_all": false					
+		}
+   }
+  }
+ }
+}
