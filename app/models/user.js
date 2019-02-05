@@ -5,8 +5,11 @@ const { Schema } = mongoose;
 
 // define the schema for our user model
 var userSchema = mongoose.Schema({
-    username: String,
+    displayName: String,
     type: String,
+    firstName: String,
+    lastName: String,
+    contactEmail: String,
     company: { type: Schema.Types.ObjectId, ref: 'company'},
     local            : {
         email        : String,

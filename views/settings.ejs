@@ -55,10 +55,53 @@
             <div class="row" style="height: 30px;"></div>             
         </div>         
         <main role="main" class="container"> 
-            <div class="row align-items-center justify-content-center" style="height: 100vh;">
-                <div class="col-md-4">
-                    <h3>Coming Soon!</h3> 
-                    <p>Work in progress. For feedback please email to Auntie.cc</p>
+            <div class="container"> 
+                <div class="row"> 
+                    <div class="col-md-3 offcanvas-collapse"> 
+                        <div class="list-group "> 
+                            <a href="/profile" class="list-group-item list-group-item-action">Profile</a> 
+                            <a href="/dash" class="list-group-item list-group-item-action">Dashboard</a> 
+                            <a href="/settings" class="list-group-item list-group-item-action">Settings</a> 
+                        </div>                         
+                    </div>                     
+                    <div class="col-12 col-lg-9"> 
+                        <div class="card"> 
+                            <div class="card-body"> 
+                                <div class="row"> 
+                                    <div class="col-md-12"> 
+                                        <h4>Your Settings</h4> 
+                                        <hr> 
+                                    </div>                                     
+                                </div>                                 
+                                <div class="row"> 
+                                    <div class="col-md-12"> 
+                                        <form action="/settings" method="post"> 
+                                            <div class="form-group row"> 
+                                                <label for="username" class="col-4 col-form-label">Change Password</label>                                                 
+                                                <div class="col-8"> 
+                                                    <input id="pw" name="pw" placeholder="Password" class="form-control here" type="password"> 
+                                                </div>                                                 
+                                            </div>
+                                            <div class="form-group row"> 
+                                                <label for="username" class="col-4 col-form-label">Old Password</label>                                                 
+                                                <div class="col-8"> 
+                                                    <input id="oldpw" name="oldpw" placeholder="Password" class="form-control here" type="password"> 
+                                                </div>                                                 
+                                            </div>  
+                                            <% if (message.length > 0) { %>
+                                                <div class="alert alert-danger"><%= message %></div>
+                                            <% } %>                                               
+                                            <div class="form-group row"> 
+                                                <div class="offset-4 col-8"> 
+                                                    <button name="submit" type="submit" class="btn btn-danger">Update My Settings</button>                                                     
+                                                </div>                                                 
+                                            </div>                                             
+                                        </form>                                         
+                                    </div>                                     
+                                </div>                                 
+                            </div>                             
+                        </div>                         
+                    </div>                     
                 </div>                 
             </div>             
         </main>         
@@ -81,7 +124,7 @@
         <!-- Placed at the end of the document so the pages load faster -->         
         <script src="assets/js/jquery.min.js"></script>         
         <script src="assets/js/popper.js"></script>         
-        <script src="assets/bootstrap/js/bootstrap.min.js"></script>         
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>            
         <script>
         $(document).ready(function () {
             $('[data-toggle="offcanvas"]').on('click', function () {

@@ -23,8 +23,6 @@ module.exports = function(app) {
 
     app.post('/item', isLoggedIn,  upload.fields([{name: 'cdata', maxCount: 4}]), async (req, res)=>{
         console.log('success!');
-        console.log(req);
-
         var folderPath = hashids.encodeHex(req.user.id) + '/';
         var pathToUrls = [];
 
@@ -72,13 +70,14 @@ module.exports = function(app) {
               }
             } else {
                 console.log('All files have been processed successfully');
-                var collectionCount = 0;
-                Item.estimatedDocumentCount(function(error, result){
-                    if(error) throw error;
-                    collectionCount = result;
-                });
                 const { title, description, itemTags } = req.body;
-                const url = convertToSlug(title) + '-' + hashurls.encode(collectionCount);
+
+                const urlid = new Date().getTime().toString()  + req.user.id;
+
+                console.log(urlid);
+                const url = hashurls.encodeHex(urlid) + '-' + convertToSlug(title);
+                console.log(url);
+
                 const listing = new Item({
                     title,
                     description,
@@ -162,11 +161,40 @@ module.exports = function(app) {
 
     //DETAILS SECTION =========================
     app.get('/details/:url', async(req, res)=> {  
-        const listing = await Item.findOne({ url: req.params.url}).populate('owner');
+        const listing = await Item.findOne({ url: req.params.url}).populate('company');
         res.render('details.ejs', {
             user : req.user,
             listing
         });
+    });
+
+
+    app.get('/delete/details/:url', isLoggedIn, async(req, res)=> {  
+        const listing = await Item.findOne({ url: req.params.url});
+
+        if(listing.company == req.user.company.id){
+            console.log("same company!");
+
+            var deleteArray = listing.filenames.map(function(r) {
+                return r.replace(/bucket/g, 'public');
+            });
+
+            console.log(deleteArray);
+
+            deleteFiles(deleteArray, function(err) {
+                if (err) {
+                  console.log(err);
+                } else {
+                    console.log('all images removed');
+                    listing.remove();
+                    res.redirect('/dash');
+                }
+            });
+
+        }else{
+            console.log("You don't own this!");
+            res.json(403, { error: 'You do not own this asset.' });
+        }
     });
 
 }
@@ -197,3 +225,21 @@ function convertToSlug(RawSlug)
         .replace(/ +/g,'-')
         ;
 }
+
+
+function deleteFiles(files, callback){
+    var i = files.length;
+    files.forEach(function(filepath){
+        var deletepath = '.'+ filepath;
+
+        fs.unlink(deletepath, function(err) {
+        i--;
+            if (err) {
+                callback(err);
+                return;
+            } else if (i <= 0) {
+                callback(null);
+            }
+        });
+    });
+  }

@@ -1,0 +1,178 @@
+<!doctype html> 
+<html lang="en"> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+        <meta name="description" content=""> 
+        <meta name="author" content=""> 
+        <title>Auntie - Search for retail goodies</title>         
+        <!-- Bootstrap core CSS -->         
+        <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+        <!-- Custom styles for this template -->         
+        <link href="assets/css/auntie.css" rel="stylesheet"> 
+    </head>     
+    <body class="bg-light"> 
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-danger"> 
+            <a class="navbar-brand mr-auto mr-lg-0" href="/">Auntie</a> 
+            <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas"> 
+                <span class="navbar-toggler-icon"></span> 
+            </button>             
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault"> 
+                <form class="form-inline my-2 my-lg-0 mt-lg-0 mb-lg-0 ml-lg-5" action="/search" method="get"> 
+                    <input name="q" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> 
+                    <button class="btn my-2 my-sm-0 btn-light" type="submit">Search</button>                     
+                </form>                 
+                <ul class="navbar-nav ml-auto"> 
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/deals">Deals</a> 
+                    </li>                     
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/events">Events</a> 
+                    </li>                
+                    <% if (!user) { %>
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/register">Register</a> 
+                    </li>   
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/login">Login</a> 
+                    </li>    
+                    <% }  %>                  
+                    <% if (user) { %>
+                        <li class="nav-item dropdown "> 
+                            <a class="nav-link dropdown-toggle" href="/dashboard" id="dropdown01" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Controls</a> 
+                            <div class="dropdown-menu" aria-labelledby="dropdown01"> 
+                                <a class="dropdown-item" href="/profile">Profile</a> 
+                                <a class="dropdown-item" href="/settings">Settings</a> 
+                                <a class="dropdown-item" href="/logout">Log out</a> 
+                            </div>                         
+                        </li>                         
+                    <% }  %>
+                </ul>                 
+            </div>             
+        </nav>          
+        <div class="container"> 
+            <div class="row" style="height: 30px;"></div>             
+        </div>         
+        <main role="main" class="container"> 
+            <div class="container"> 
+                <div class="row"> 
+                    <div class="col-md-3 offcanvas-collapse"> 
+                        <div class="list-group "> 
+                            <a href="/profile" class="list-group-item list-group-item-action">Profile</a> 
+                            <a href="/dash" class="list-group-item list-group-item-action">Dashboard</a> 
+                            <a href="/settings" class="list-group-item list-group-item-action">Settings</a> 
+                        </div>                         
+                    </div>                     
+                    <div class="col-12 col-lg-9"> 
+                        <div class="card"> 
+                            <div class="card-body"> 
+                                <div class="row"> 
+                                    <div class="col-md-12"> 
+                                        <h4>Your Profile</h4> 
+                                        <hr> 
+                                    </div>                                     
+                                </div>                                 
+                                <div class="row"> 
+                                    <div class="col-md-12"> 
+                                        <form action="/profile" method="post"> 
+                                            <div class="form-group row"> 
+                                                <label for="displayname" class="col-4 col-form-label">Display Name</label>                                                 
+                                                <div class="col-8"> 
+                                                    <input id="displayname" name="displayname" placeholder="Display Name" class="form-control here"  type="text" value="<%= user.displayName %>" > 
+                                                </div>                                                 
+                                            </div>                                             
+                                            <div class="form-group row"> 
+                                                <label for="name" class="col-4 col-form-label">First Name</label>                                                 
+                                                <div class="col-8"> 
+                                                    <input id="firstname" name="firstname" placeholder="First Name" class="form-control here" type="text" value="<%= user.firstName %>" > 
+                                                </div>                                                 
+                                            </div>                                             
+                                            <div class="form-group row"> 
+                                                <label for="lastname" class="col-4 col-form-label">Last Name</label>                                                 
+                                                <div class="col-8"> 
+                                                    <input id="lastname" name="lastname" placeholder="Last Name" class="form-control here" type="text" value="<%= user.lastName %>" > 
+                                                </div>                                                 
+                                            </div>                                             
+                                            <div class="form-group row"> 
+                                                <label for="text" class="col-4 col-form-label">Company Name</label>                                                 
+                                                <div class="col-8"> 
+                                                    <input id="cname" name="cname" placeholder="Company Name" class="form-control here" required="required" type="text" value="<%= user.company.name %>"  > 
+                                                </div>                                                 
+                                            </div>                                             
+                                            <div class="form-group row"> 
+                                                <label for="select" class="col-4 col-form-label">Business Type</label>                                                 
+                                                <div class="col-8"> 
+                                                    <select name="inputBizType" class="custom-select"> 
+                                                        <%
+                                                        var options = ["Company", "Franchise", "Franchisee", "Pop-up retail" ];
+                                                            for ( var i = 0; i < options.length; i++ )
+                                                            {
+                                                                var selected = ( user.type === options[i] ) ? "selected" : "";
+                                                                %><option value="<%=options[i] %>" <%=selected %> ><%=options[i] %></option>  <%
+                                                            }
+                                                        %>                                                    
+                                                    </select>                                                     
+                                                </div>                                                 
+                                            </div>                                             
+                                            <div class="form-group row"> 
+                                                <label for="email" class="col-4 col-form-label">Contact Email</label>                                                 
+                                                <div class="col-8"> 
+                                                    <input id="contactEmail" name="contactEmail" placeholder="Email" class="form-control here" type="text"  value="<%= user.contactEmail %>"> 
+                                                </div>                                                 
+                                            </div>                                             
+                                            <div class="form-group row"> 
+                                                <label for="website" class="col-4 col-form-label">Website</label>                                                 
+                                                <div class="col-8"> 
+                                                    <input id="website" name="website" placeholder="Url" class="form-control here" type="text"  value="<%= user.company.website %>"> 
+                                                </div>                                                 
+                                            </div>                                             
+                                            <div class="form-group row"> 
+                                                <label for="publicinfo" class="col-4 col-form-label">Company Info</label>                                                 
+                                                <div class="col-8"> 
+                                                    <textarea id="description" name="description" cols="40" rows="4" class="form-control"><%= user.company.description %></textarea>                                                     
+                                                </div>                                                 
+                                            </div>                                             
+                                            <div class="form-group row"> 
+                                                <div class="offset-4 col-8"> 
+                                                    <button name="submit" type="submit" class="btn btn-danger">Update My Profile</button>                                                     
+                                                </div>                                                 
+                                            </div>                                             
+                                        </form>                                         
+                                    </div>                                     
+                                </div>                                 
+                            </div>                             
+                        </div>                         
+                    </div>                     
+                </div>                 
+            </div>             
+        </main>         
+        <footer class="my-5 pt-5 text-muted text-center text-small"> 
+            <p class="mb-1">&copy; 2019 Auntie.cc</p> 
+            <ul class="list-inline"> 
+                <li class="list-inline-item"> 
+                    <a href="#">Privacy</a> 
+                </li>                 
+                <li class="list-inline-item"> 
+                    <a href="#">Terms</a> 
+                </li>                 
+                <li class="list-inline-item"> 
+                    <a href="#">Support</a> 
+                </li>                 
+            </ul>             
+        </footer>         
+        <!-- Bootstrap core JavaScript
+    ================================================== -->         
+        <!-- Placed at the end of the document so the pages load faster -->         
+        <script src="assets/js/jquery.min.js"></script>         
+        <script src="assets/js/popper.js"></script>         
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>               
+        <script>
+        $(document).ready(function () {
+            $('[data-toggle="offcanvas"]').on('click', function () {
+                $('.offcanvas-collapse').toggleClass('open');
+            });
+        });
+    </script>         
+    </body>     
+</html>

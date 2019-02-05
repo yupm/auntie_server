@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Item = mongoose.model('item');
-const querystring = require('querystring');
 var elasticsearch = require('elasticsearch');
 var client = new elasticsearch.Client({
     host: 'localhost:9200',
