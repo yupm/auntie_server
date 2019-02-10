@@ -5,6 +5,7 @@ var itemSchema = new Schema({
     title: String,
     company: { type: Schema.Types.ObjectId, ref: 'company'},
     description: String,
+    specifications: [{attr : String, details: String}],
     url: String,
     views: { type: Number, default : 0 },
     searched: { type: Number, default : 0 },    
