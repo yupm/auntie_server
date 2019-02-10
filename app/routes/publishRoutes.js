@@ -23,6 +23,7 @@ module.exports = function(app) {
 
     app.post('/item', isLoggedIn,  upload.fields([{name: 'cdata', maxCount: 4}]), async (req, res)=>{
         console.log('success!');
+        console.log(req.body);
         var folderPath = hashids.encodeHex(req.user.id) + '/';
         var pathToUrls = [];
 

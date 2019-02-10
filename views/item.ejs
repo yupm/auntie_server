@@ -15,13 +15,38 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.4.3/cropper.min.css" rel="stylesheet"> 
         <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
 
-        <style>#my-image,
+        <style>
+#my-image,
 #use {
     display: none;
 }
 
+.prodbtn{
+    width:50px;
+}
+
 .bootstrap-tagsinput {
     width: 100%;
+}
+
+html, body {
+    padding-top: 20px;
+}
+
+[data-role="dynamic-fields"] > .form-inline + .form-inline {
+    margin-top: 0.5em;
+}
+
+[data-role="dynamic-fields"] > .form-inline [data-role="add"] {
+    display: none;
+}
+
+[data-role="dynamic-fields"] > .form-inline:last-child [data-role="add"] {
+    display: inline-block;
+}
+
+[data-role="dynamic-fields"] > .form-inline:last-child [data-role="remove"] {
+    display: none;
 }
 
 
@@ -91,10 +116,7 @@
                         </div>                     
                     </div>                 
                 </div>       
-
-
-
-            <div class="col-sm-6 offset-sm-3">
+            <div class="col-xl-6 offset-xl-3">
                 <h1><br>Upload item</h1>
                 <form id="formData1" action="/item" method="post" enctype="multipart/form-data">
                     <div class="form-group">Listing Title&nbsp; &nbsp;&nbsp;
@@ -105,6 +127,26 @@
                         <label>Description</label>
                         <textarea type="text" rows="6" class="form-control" name="description"></textarea>
                     </div>
+                    <label>Product Specifications</label>
+                    <div data-role="dynamic-fields">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label class="sr-only" for="spec-name">Field Name</label>
+                                <input type="text" class="form-control" id="spec-name" placeholder="Specification">
+                            </div>
+                            <span>-</span>
+                            <div class="form-group">
+                                <label class="sr-only" for="spec-value">Field Value</label>
+                                <input type="text" class="form-control" id="spec-value" placeholder="Details">
+                            </div>
+                            <button class="prodbtn btn btn-primary" data-role="remove">
+                                -
+                            </button>
+                            <button class="prodbtn btn btn-danger" data-role="add">
+                                +
+                            </button>
+                        </div>  <!-- /div.form-inline -->
+                    </div>  <!-- /div[data-role="dynamic-fields"] -->
                     <div class="container mt-5">
                         <div class="row">
                             <div class="d-flex justify-content-center align-items-center col-6 " style="padding-top: 50%;">
@@ -190,6 +232,29 @@
             $('[data-toggle="offcanvas"]').on('click', function () {
                 $('.offcanvas-collapse').toggleClass('open');
             });
+
+            $(document).on(
+                'click',
+                '[data-role="dynamic-fields"] > .form-inline [data-role="remove"]',
+                function(e) {
+                    e.preventDefault();
+                    $(this).closest('.form-inline').remove();
+                }
+            );
+            // Add button click
+            $(document).on(
+                'click',
+                '[data-role="dynamic-fields"] > .form-inline [data-role="add"]',
+                function(e) {
+                    e.preventDefault();
+                    var container = $(this).closest('[data-role="dynamic-fields"]');
+                    new_field_group = container.children().filter('.form-inline:first-child').clone();
+                    new_field_group.find('input').each(function(){
+                        $(this).val('');
+                    });
+                    container.append(new_field_group);
+                }
+            );
         });
 
         $('input:file').on('change', function() {
@@ -263,6 +328,9 @@
                 data.append("cdata", inputInfo[i].blob, inputInfo[i].name);
             }
 
+            console.log(data);
+
+            /*
             $.ajax({
                 url: '/item',
                 data: data,
@@ -274,7 +342,7 @@
                     console.log(data);
                     window.location.href = data.redirect;
                 }
-            });
+            });*/
         };
 
     </script>         
