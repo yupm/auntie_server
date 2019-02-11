@@ -82,6 +82,7 @@ GET /consumer/_search
 
 curl -XDELETE localhost:9200/_all
 
+DELETE /_all
 
 https://www.elastic.co/guide/en/kibana/current/tutorial-load-dataset.html
 

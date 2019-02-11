@@ -132,12 +132,12 @@ html, body {
                         <div class="form-inline">
                             <div class="form-group">
                                 <label class="sr-only" for="spec-name">Field Name</label>
-                                <input type="text" class="form-control" id="spec-name" placeholder="Specification">
+                                <input name="specNames[]" type="text" class="form-control" id="spec-name" placeholder="Specification">
                             </div>
                             <span>-</span>
                             <div class="form-group">
                                 <label class="sr-only" for="spec-value">Field Value</label>
-                                <input type="text" class="form-control" id="spec-value" placeholder="Details">
+                                <input name="specValues[]" type="text" class="form-control" id="spec-value" placeholder="Details">
                             </div>
                             <button class="prodbtn btn btn-primary" data-role="remove">
                                 -
@@ -330,7 +330,7 @@ html, body {
 
             console.log(data);
 
-            /*
+            
             $.ajax({
                 url: '/item',
                 data: data,
@@ -342,7 +342,7 @@ html, body {
                     console.log(data);
                     window.location.href = data.redirect;
                 }
-            });*/
+            });
         };
 
     </script>         

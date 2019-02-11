@@ -71,13 +71,21 @@ module.exports = function(app) {
               }
             } else {
                 console.log('All files have been processed successfully');
-                const { title, description, itemTags } = req.body;
+                const { title, description, itemTags, specNames, specValues } = req.body;
 
                 const urlid = new Date().getTime().toString()  + req.user.id;
 
                 console.log(urlid);
                 const url = hashurls.encodeHex(urlid) + '-' + convertToSlug(title);
                 console.log(url);
+                
+                var specs = [];
+                for(var i =0; i < specNames.length; i++){
+                    if(specNames[i] !== '')
+                    {
+                        specs.push({ attr : specNames[i], details: specValues[i]});
+                    }
+                }
 
                 const listing = new Item({
                     title,
@@ -85,6 +93,7 @@ module.exports = function(app) {
                     company: req.user.company,
                     url,
                     filenames: pathToUrls,
+                    specifications: specs,
                     tags: itemTags.split(','),
                     geometry: req.user.company.geometry
                 });
