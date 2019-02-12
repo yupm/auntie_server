@@ -15,15 +15,14 @@ var async = require('async');
 
 module.exports = function(app) {
     // POSTING SECTION =========================
-    app.get('/item', function(req, res) {
+    app.get('/item', isLoggedIn, function(req, res) {
         res.render('item.ejs',{
             user : req.user
         });
     });
 
     app.post('/item', isLoggedIn,  upload.fields([{name: 'cdata', maxCount: 4}]), async (req, res)=>{
-        console.log('success!');
-        console.log(req.body);
+        console.log('uploaded!');
         var folderPath = hashids.encodeHex(req.user.id) + '/';
         var pathToUrls = [];
 
@@ -80,10 +79,12 @@ module.exports = function(app) {
                 console.log(url);
                 
                 var specs = [];
-                for(var i =0; i < specNames.length; i++){
-                    if(specNames[i] !== '')
-                    {
-                        specs.push({ attr : specNames[i], details: specValues[i]});
+                if(specNames){
+                    for(var i =0; i < specNames.length; i++){
+                        if(specNames[i] !== '')
+                        {
+                            specs.push({ attr : specNames[i], details: specValues[i]});
+                        }
                     }
                 }
 

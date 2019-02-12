@@ -10,7 +10,6 @@ var client = new elasticsearch.Client({
 module.exports = function(app) {
     // SEARCH SECTION =========================
     app.get('/search',  async(req, res) =>{
-
         const esSearch = await client.search({
             index: 'consumer',
             body: {
@@ -19,7 +18,7 @@ module.exports = function(app) {
                     query: req.query.q, 
                     fuzziness: 6,
                     prefix_length: 1,
-                    fields: [ "tile", "description", "tags"] 
+                    fields: [ "title", "description", "tags", "specifications.details"] 
                 }
               }
             }

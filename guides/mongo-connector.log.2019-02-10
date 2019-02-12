@@ -1,8 +1,0 @@
-2019-02-10 14:32:31,678 [ALWAYS] mongo_connector.connector:50 - Starting mongo-connector version: 3.1.1
-2019-02-10 14:32:31,678 [ALWAYS] mongo_connector.connector:50 - Python version: 3.7.2 (default, Jan 13 2019, 12:50:15) 
-[Clang 10.0.0 (clang-1000.11.45.5)]
-2019-02-10 14:32:31,694 [ALWAYS] mongo_connector.connector:50 - Platform: Darwin-17.7.0-x86_64-i386-64bit
-2019-02-10 14:32:31,694 [ALWAYS] mongo_connector.connector:50 - pymongo version: 3.7.2
-2019-02-10 14:32:31,695 [WARNING] mongo_connector.connector:170 - MongoConnector: Can't find /Users/milton/Documents/Github/auntie_server/guides/oplog.timestamp, attempting to create an empty progress log
-2019-02-10 14:32:31,702 [ALWAYS] mongo_connector.connector:50 - Source MongoDB version: 3.6.4
-2019-02-10 14:32:31,702 [ALWAYS] mongo_connector.connector:50 - Target DocManager: mongo_connector.doc_managers.elastic2_doc_manager version: 1.0.0

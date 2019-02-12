@@ -133,32 +133,31 @@
                             <dl class="item-property">
                                 <dt>Description</dt>
                                 <dd>
-                                    <p><%= listing.description %></p>
+                                    <pre><%= listing.description %></pre>
                                 </dd>
                             </dl>
-                            <dl class="param param-feature">
-                                <dt class="pr-auto">Model</dt>
-                                <dd>12345611</dd>
-                            </dl>                             
                             <dl class="param param-feature"> 
                                 <dt>Product Specifications</dt> 
-                                <table id="specs">
-                                    <tr>
-                                        <td>Alfreds Futterkiste</td>
-                                        <td>Maria Anders</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Alfreds Futterkiste</td>
-                                        <td>Maria Anders</td>
-                                    </tr>
-                                </table>                                 
+                                <% if (listing.specifications) { %>
+                                    <table id="specs">
+                                        <% for(var i=0; i < listing.specifications.length; i++) { %>
+                                            <tr>
+                                                <td><%=listing.specifications[i].attr%></td>
+                                                <td><%=listing.specifications[i].details%></td>
+                                            </tr>
+                                        <% } %>
+                                    </table>      
+                                <% } else { %>
+                                    <dd>
+                                        <p>Nil.</p>
+                                    </dd>
+                                <% }%>
+                           
                             </dl>                                                        
                             <dl class="param param-feature">
                                 <dt>Location</dt>
-                                <dd>Russia, USA, and Europe</dd>
+                                <dd><%= listing.company.name %></dd>
                             </dl>                             
-                            <hr>
-                            <a href="#" class="btn btn-lg btn-primary text-uppercase">Contact seller</a>
                         </article>                         
                     </aside>                     
                 </div>                 
