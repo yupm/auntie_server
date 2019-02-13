@@ -10,18 +10,52 @@ var client = new elasticsearch.Client({
 module.exports = function(app) {
     // SEARCH SECTION =========================
     app.get('/search',  async(req, res) =>{
+      console.log(req.query);
+
+      var body;
+      if(req.query.d)
+      {
+        console.log("Filter distance");
+        body = {
+          sort : [
+            {
+                _geo_distance : {
+                    "geometry.coordinates" : [103.851959, 1.290270],
+                    "order" : "asc",
+                    "unit" : "km"
+                },
+            }
+          ],
+          query : {
+            multi_match: {
+              query: req.query.q, 
+              fuzziness: 6,
+              prefix_length: 1,
+              fields: [ "title", "description", "tags", "specifications.details"] 
+            }
+          }
+    
+        }
+      }
+      else
+      {
+        console.log("Multi search");
+        body= {
+          query: {
+            multi_match: {
+                query: req.query.q, 
+                fuzziness: 6,
+                prefix_length: 1,
+                fields: [ "title", "description", "tags", "specifications.details"] 
+            }
+          }
+        }
+      };
+    
+
         const esSearch = await client.search({
             index: 'consumer',
-            body: {
-              query: {
-                multi_match: {
-                    query: req.query.q, 
-                    fuzziness: 6,
-                    prefix_length: 1,
-                    fields: [ "title", "description", "tags", "specifications.details"] 
-                }
-              }
-            }
+            body
           });
           
         var obj_ids = esSearch.hits.hits.map(function(searchResult) { return mongoose.Types.ObjectId(searchResult._id); });
