@@ -19,6 +19,9 @@ GET _search
 GET /_cat/indices?v
 
 
+curl -XDELETE localhost:9200/_all
+
+DELETE /_all
 
 
 GET /companies/_search
@@ -80,9 +83,6 @@ GET /consumer/_search
 }
 
 
-curl -XDELETE localhost:9200/_all
-
-DELETE /_all
 
 https://www.elastic.co/guide/en/kibana/current/tutorial-load-dataset.html
 
@@ -93,6 +93,8 @@ PUT /corporate
   "companies": {
    "properties": {
     "name": {"type": "keyword"},
+    "website" : {"type": "keyword"},
+    "sector" : {"type": "keyword"},
     "geometry.coordinates": {"type": "geo_point"}
    }
   }
@@ -105,6 +107,7 @@ PUT /consumer
  "mappings": {
   "items": {
    "properties": {
+    "companyname" : {"type": "keyword"},
     "geometry.coordinates": {"type": "geo_point"}
    }
   }

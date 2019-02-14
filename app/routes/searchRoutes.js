@@ -3,7 +3,10 @@ const Item = mongoose.model('item');
 var elasticsearch = require('elasticsearch');
 var client = new elasticsearch.Client({
     host: 'localhost:9200',
-    log: 'trace',
+    log: [{
+      type: 'stdio',
+      levels: [ 'trace', 'error', 'warning'] // change these options
+    }],
     apiVersion: '5.6'
   });
 
@@ -20,21 +23,20 @@ module.exports = function(app) {
           sort : [
             {
                 _geo_distance : {
-                    "geometry.coordinates" : [103.851959, 1.290270],
+                    "geometry.coordinates" : [103.852585892041, 1.29293624242153],
                     "order" : "asc",
-                    "unit" : "km"
                 },
             }
           ],
           query : {
             multi_match: {
               query: req.query.q, 
-              fuzziness: 6,
+              fuzziness: 3,
               prefix_length: 1,
-              fields: [ "title", "description", "tags", "specifications.details"] 
+              fields: [ "title", "description", "specifications.details", "companyname"],
+              cutoff_frequency: 0.0001
             }
           }
-    
         }
       }
       else
@@ -44,27 +46,43 @@ module.exports = function(app) {
           query: {
             multi_match: {
                 query: req.query.q, 
-                fuzziness: 6,
+                fuzziness: 3,
                 prefix_length: 1,
-                fields: [ "title", "description", "tags", "specifications.details"] 
+                fields: [ "title", "description", "specifications.details","companyname"],
+                cutoff_frequency: 0.0001
             }
           }
         }
       };
-    
 
-        const esSearch = await client.search({
-            index: 'consumer',
-            body
-          });
-          
-        var obj_ids = esSearch.hits.hits.map(function(searchResult) { return mongoose.Types.ObjectId(searchResult._id); });
-        const results = await Item.find({_id: {$in: obj_ids}}).populate('company');
+      if(req.query.start){
+        body["from"] = req.query.start;
+        body["size"] = 20;
+      }
+  
+      const esSearch = await client.search({
+          index: 'consumer',
+          body
+        });
+        
+      var obj_ids = esSearch.hits.hits.map(function(searchResult) { return mongoose.Types.ObjectId(searchResult._id); });
+      const results = await Item.find({_id: {$in: obj_ids}}).populate('company');
 
-         res.render('search.ejs', {
-             user : req.user,
-             results
-         });
+      for(var s = 0; s < obj_ids.length; s++){
+        var tempResult = results[s];          
+          for(var j = s; j < obj_ids.length; j++){
+            if(results[j]._id.equals(obj_ids[s])){
+                results[s] = results[j];
+                results[j] = tempResult;
+                break;
+            }
+          }
+      }
+
+      res.render('search.ejs', {
+          user : req.user,
+          results
+      });
      });
 
  }

@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 var companySchema = new Schema({
     name: String,
     description: String,
+    sector: String,
     owner: { type: Schema.Types.ObjectId, ref: 'user'},
     type: String,
     processingTime: String,

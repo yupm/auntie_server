@@ -22,7 +22,6 @@ module.exports = function(app) {
     });
 
     app.post('/item', isLoggedIn,  upload.fields([{name: 'cdata', maxCount: 4}]), async (req, res)=>{
-        console.log('uploaded!');
         var folderPath = hashids.encodeHex(req.user.id) + '/';
         var pathToUrls = [];
 
@@ -92,6 +91,7 @@ module.exports = function(app) {
                     title,
                     description,
                     company: req.user.company,
+                    companyname: req.user.company.name,
                     url,
                     filenames: pathToUrls,
                     specifications: specs,

@@ -4,8 +4,11 @@ const { Schema } = mongoose;
 var itemSchema = new Schema({
     title: String,
     company: { type: Schema.Types.ObjectId, ref: 'company'},
+    companyname: String,
     description: String,
     specifications: [{attr : String, details: String}],
+    category: String,
+    subcategory: String,
     url: String,
     views: { type: Number, default : 0 },
     searched: { type: Number, default : 0 },    

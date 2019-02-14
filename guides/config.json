@@ -9,11 +9,11 @@
 	"namespaces": {
 		"auntie.companies":  {
 		  "rename": "corporate.companies",
-		  "includeFields": ["_id", "name", "geometry.coordinates"]
+		  "includeFields": ["_id", "name", "geometry.coordinates", "description", "sector", "website"]
 		},
 		"auntie.items":  {
 		   "rename": "consumer.items",
-		  "includeFields": ["_id","title", "description", "geometry.coordinates", "tags", "specifications"]
+		  "includeFields": ["_id","title", "description", "geometry.coordinates", "tags", "specifications", "companyname"]
 		}
 	},
 	  

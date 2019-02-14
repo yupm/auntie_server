@@ -12,9 +12,6 @@ module.exports = function(app) {
     });
 
     app.post('/profile', isLoggedIn, async(req, res) => {
-
-        console.log(req.body);
-
         const profile = await req.user.populate('company');
 
         profile.displayName = req.body.displayname;
