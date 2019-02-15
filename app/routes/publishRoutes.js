@@ -69,7 +69,7 @@ module.exports = function(app) {
               }
             } else {
                 console.log('All files have been processed successfully');
-                const { title, description, itemTags, specNames, specValues } = req.body;
+                const { title, description, itemTags, specNames, specValues, cat } = req.body;
 
                 const urlid = new Date().getTime().toString()  + req.user.id;
 
@@ -92,6 +92,7 @@ module.exports = function(app) {
                     description,
                     company: req.user.company,
                     companyname: req.user.company.name,
+                    category: cat,
                     url,
                     filenames: pathToUrls,
                     specifications: specs,
