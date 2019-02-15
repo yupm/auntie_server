@@ -125,7 +125,7 @@ body {
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea type="text" rows="6" class="form-control" name="description" id="pdesc"></textarea>
+                        <textarea type="text" rows="6" class="form-control" name="pdesc" id="pdesc"></textarea>
                     </div>
                     <label>Product Specifications</label>
                     <div data-role="dynamic-fields">
@@ -258,12 +258,13 @@ body {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.4.3/cropper.min.js"></script>
         <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>         
         <script>
+        let editor;
         ClassicEditor
             .create( document.querySelector( '#pdesc' ), {
-                toolbar: [ 'headings', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
+                toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
             })
-            .then( editor => {
-                    console.log( editor );
+            .then( initEditor => {
+                editor = initEditor;
             } )
             .catch( error => {
                     console.error( error );
@@ -364,13 +365,13 @@ body {
         {
             console.log("Posting");
             var data = new FormData($("form[id*='formData1']")[0]);
+            var descData = editor.getData();
+            data.set('pdesc', descData );
+
             for(var i = 0; i< inputInfo.length; i++){
                 data.append("cdata", inputInfo[i].blob, inputInfo[i].name);
             }
 
-            console.log(data);
-
-            
             $.ajax({
                 url: '/item',
                 data: data,

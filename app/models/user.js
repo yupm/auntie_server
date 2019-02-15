@@ -7,6 +7,7 @@ const { Schema } = mongoose;
 var userSchema = mongoose.Schema({
     displayName: String,
     type: String,
+    billing: String,
     firstName: String,
     lastName: String,
     contactEmail: String,

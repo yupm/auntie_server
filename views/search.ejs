@@ -20,6 +20,12 @@ a:link {
 a:visited {
   color: darkred;
 }   
+.truncate {
+  width: 400px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
         
         </style>
     </head>     
@@ -77,7 +83,7 @@ a:visited {
                                     <div class="card-body flex-column d-flex align-items-start"> 
                                         <h4 class="mb-0"><a href='/details/<%= results[i].url %>'><%= results[i].title %></a></h4> 
                                         <div class="mb-1 text-muted"><%= results[i].company.name %></div>                             
-                                        <p class="card-text mb-auto"><%= results[i].description %></p> 
+                                        <p class="card-text mb-auto truncate"><%= results[i].description %></p> 
                                     </div>                         
                                 </div>      
                             <% } %>

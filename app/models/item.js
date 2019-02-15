@@ -6,6 +6,7 @@ var itemSchema = new Schema({
     company: { type: Schema.Types.ObjectId, ref: 'company'},
     companyname: String,
     description: String,
+    html: String,
     specifications: [{attr : String, details: String}],
     category: String,
     subcategory: String,

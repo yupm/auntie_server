@@ -12,6 +12,7 @@ var multer = require('multer');
 var upload = multer({ dest: './public/upload/temp' });
 var async = require('async');
 
+var h2p = require('html2plaintext');
 
 module.exports = function(app) {
     // POSTING SECTION =========================
@@ -69,7 +70,8 @@ module.exports = function(app) {
               }
             } else {
                 console.log('All files have been processed successfully');
-                const { title, description, itemTags, specNames, specValues, cat } = req.body;
+                const { title, pdesc, itemTags, specNames, specValues, cat } = req.body;
+                const description = h2p(pdesc);
 
                 const urlid = new Date().getTime().toString()  + req.user.id;
 
@@ -90,6 +92,7 @@ module.exports = function(app) {
                 const listing = new Item({
                     title,
                     description,
+                    html: pdesc,
                     company: req.user.company,
                     companyname: req.user.company.name,
                     category: cat,
@@ -109,13 +112,11 @@ module.exports = function(app) {
                     }else{
                         res.status(200).json( { redirect: '/' });
                     }
-                });
-        
+                });        
             }
-        });      
 
-        console.log("WHY"); 
-       
+        });                  
+        console.log("Should not be here"); 
     });
 
 
