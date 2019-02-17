@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Item = mongoose.model('item');
 var elasticsearch = require('elasticsearch');
+const logger = require('../../config/logger')(__filename);
+
 var client = new elasticsearch.Client({
     host: 'localhost:9200',
     log: [{
@@ -13,12 +15,12 @@ var client = new elasticsearch.Client({
 module.exports = function(app) {
     // SEARCH SECTION =========================
     app.get('/search',  async(req, res) =>{
-      console.log(req.query);
+      logger.debug(req.query);
 
       var body;
       if(req.query.d)
       {
-        console.log("Filter distance");
+        logger.debug("Filter distance");
         body = {
           sort : [
             {
@@ -41,7 +43,7 @@ module.exports = function(app) {
       }
       else
       {
-        console.log("Multi search");
+        logger.debug("Multi search");
         body= {
           query: {
             multi_match: {

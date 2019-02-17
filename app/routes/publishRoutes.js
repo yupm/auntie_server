@@ -7,6 +7,7 @@ const Item = mongoose.model('item');
 var Hashids = require('hashids');
 var hashids = new Hashids('A hashing function for Auntie.cc2019');
 var hashurls = new Hashids('Short and sweet');
+const logger = require('../../config/logger')(__filename);
 
 var multer = require('multer');
 var upload = multer({ dest: './public/upload/temp' });
@@ -16,13 +17,13 @@ var h2p = require('html2plaintext');
 
 module.exports = function(app) {
     // POSTING SECTION =========================
-    app.get('/item', isLoggedIn, function(req, res) {
-        res.render('item.ejs',{
+    app.get('/post', isLoggedIn, function(req, res) {
+        res.render('post.ejs',{
             user : req.user
         });
     });
 
-    app.post('/item', isLoggedIn,  upload.fields([{name: 'cdata', maxCount: 4}]), async (req, res)=>{
+    app.post('/post', isLoggedIn,  upload.fields([{name: 'cdata', maxCount: 4}]), async (req, res)=>{
         var folderPath = hashids.encodeHex(req.user.id) + '/';
         var pathToUrls = [];
 
@@ -66,7 +67,7 @@ module.exports = function(app) {
               {
                     res.status(422).json( { error: err });
               }else{
-                    res.status(500).json( { redirect: '/item' });
+                    res.status(500).json( { redirect: '/post' });
               }
             } else {
                 console.log('All files have been processed successfully');
@@ -107,7 +108,7 @@ module.exports = function(app) {
                 listing.save(function (err, image) {
                     if(err){
                         console.log("TODO");
-                        res.status(500).json( { redirect: '/item' });
+                        res.status(500).json( { redirect: '/post' });
 
                     }else{
                         res.status(200).json( { redirect: '/' });

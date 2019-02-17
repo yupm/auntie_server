@@ -11,6 +11,12 @@
         <link href="../assets/bootstrap/css/bootstrap.css" rel="stylesheet"> 
         <!-- Custom styles for this template -->         
         <link href="../assets/css/auntie.css" rel="stylesheet"> 
+        <script src="https://cdn.ckeditor.com/ckeditor5/11.2.0/classic/ckeditor.js"></script>
+        <style>
+        .ck-editor__editable {
+            min-height: 300px;
+        }
+        </style>
     </head>     
     <body class="bg-light"> 
         <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-danger"> 
@@ -72,7 +78,7 @@
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea type="text" rows="6" class="form-control" name="description"></textarea>
+                        <textarea type="text" rows="6" class="form-control" name="edesc" id="edesc"></textarea>
                     </div>
                     <div class="form-group">Upload Poster
                         <br>
@@ -113,6 +119,18 @@
                 $('.offcanvas-collapse').toggleClass('open');
             });
         });
+
+        let editor;
+        ClassicEditor
+            .create( document.querySelector( '#edesc' ), {
+                toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
+            })
+            .then( initEditor => {
+                editor = initEditor;
+            } )
+            .catch( error => {
+                    console.error( error );
+        } );
         </script>         
     </body>     
 </html>

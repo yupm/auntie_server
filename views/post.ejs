@@ -118,7 +118,7 @@ body {
             </div>             
             <div class="col-xl-10 offset-xl-1">
                 <h1><br>Upload item</h1>
-                <form id="formData1" action="/item" method="post" enctype="multipart/form-data">
+                <form id="formData1" action="/post" method="post" enctype="multipart/form-data">
                     <div class="form-group">Listing Title&nbsp; &nbsp;&nbsp;
                         <br>
                         <input type="text" class="form-control" name="title">
@@ -338,13 +338,7 @@ body {
 
         $("#cropbtn").click(function() {
             var index = inputInfo.map(function(e) { return e.id; }).indexOf(curPos);
-
-            console.log(curPos);
-            console.log(index);
-            console.log(inputInfo);
-
             var showImg = document.getElementById('preview-' + curPos);  
-
             cropper0.getCroppedCanvas({
                 minWidth: 256,
                 minHeight: 256,
@@ -363,7 +357,6 @@ body {
         
         function PostForm()
         {
-            console.log("Posting");
             var data = new FormData($("form[id*='formData1']")[0]);
             var descData = editor.getData();
             data.set('pdesc', descData );
@@ -373,14 +366,13 @@ body {
             }
 
             $.ajax({
-                url: '/item',
+                url: '/post',
                 data: data,
                 cache: false,
                 contentType: false,
                 processData: false,
                 type: 'POST',
                 success: function(data, textStatus, jqXHR){
-                    console.log(data);
                     window.location.href = data.redirect;
                 }
             });

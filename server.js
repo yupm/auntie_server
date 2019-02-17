@@ -9,6 +9,9 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
 var     path = require('path');
+const logger = require('./config/logger')(__filename);
+var expressWinston = require('express-winston');
+
 require('./app/models/post');
 require('./app/models/event');
 require('./app/models/deal');
@@ -28,6 +31,7 @@ var configDB = require('./config/database.js');
 mongoose.connect(configDB.url, { useNewUrlParser: true }); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration
+//app.use(expressWinston.logger(logger));
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
@@ -56,4 +60,4 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 
 // launch ======================================================================
 app.listen(port);
-console.log('The magic happens on port ' + port);
+logger.debug('The magic happens on port ' + port);

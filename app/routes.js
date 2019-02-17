@@ -3,6 +3,7 @@ const boardRoutes = require('./routes/boardRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const publishRoutes = require('./routes/publishRoutes');
 const searchRoutes = require('./routes/searchRoutes');
+const logger = require('./../config/logger')(__filename);
 
 module.exports = function(app, passport) {
     authRoutes(app, passport);
@@ -14,6 +15,13 @@ module.exports = function(app, passport) {
 // normal routes ===============================================================
     // show the home page (will also have our login links)
     app.get('/', function(req, res) {
+       // console.log(req.user._id);
+       // console.log("_______________________________________________");
+
+      //  console.log(req.headers);
+
+        logger.debug(req.user._id + " " + req.headers);
+
         if(req.user){
             res.redirect('/dash');
         }

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('user');
+const logger = require('../../config/logger')(__filename);
+
 
 module.exports = function(app) {
 
@@ -57,18 +59,18 @@ module.exports = function(app) {
     });
 
     app.post('/settings', isLoggedIn, async(req, res) => {
-        console.log("Update");
+        logger.debug("Update");
 
         if (req.user.validPassword(req.body.oldpw))
         {
-            console.log("YES");
+            logger.debug("YES");
             req.user.local.password = req.user.generateHash(req.body.pw);
             req.user.save().then(()=>{
                 req.flash('passwordMsg', 'Password successfully updated!');
                 res.redirect('/settings');
             });
         }else{
-            console.log("No");
+            logger.debug("No");
             req.flash('passwordMsg', 'Your current password is incorrect.');
             res.redirect('/settings');
         }
