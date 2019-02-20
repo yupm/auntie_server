@@ -16,10 +16,11 @@ if (!fs.existsSync(logDir)) {
 const dailyRotateFileTransport = new transports.DailyRotateFile({
     filename: `${logDir}/%DATE%-auntie.log`,
     datePattern: 'YYYY-MM-DD',
+    handleExceptions: true,
     format: format.combine(
         format.printf(
           info =>
-            `${info.timestamp} ${info.level} [${info.label}]: ${info.message}`
+            `${info.timestamp} [${info.label}]: ${info.message}`
         ),
         format.json()
       )
@@ -35,7 +36,7 @@ const logger = caller => {
       format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' })
     ),
     transports: [
-      new transports.Console({
+     /* new transports.Console({
         format: format.combine(
           format.colorize(),
           format.printf(
@@ -43,7 +44,7 @@ const logger = caller => {
               `${info.timestamp} ${info.level} [${info.label}]: ${info.message}`
           )
         )
-      }),
+      }),*/
       dailyRotateFileTransport
     ]
   });

@@ -118,7 +118,7 @@ module.exports = function (passport) {
                                     var coordinates = [];
                                     if(response.data.results)
                                     {
-                                        logger.debug(response.data.results[0])
+                                        console.log(response.data.results[0])
                                         coordinates.push(response.data.results[0].LONGITUDE);
                                         coordinates.push(response.data.results[0].LATITUDE);
                                     }
@@ -150,7 +150,7 @@ module.exports = function (passport) {
                 } else if (!req.user.local.email) {
                     // ...presumably they're trying to connect a local account
                     // BUT let's check if the email used to connect a local account is being used by another user
-                    logger.debug("Log in but no account");
+                    console.log("Log in but no account");
                     User.findOne({ 'local.email': email }, function (err, user) {
                         if (err)
                             return done(err);
@@ -172,7 +172,7 @@ module.exports = function (passport) {
                     });
                 } else {
                     // user is logged in and already has a local account. Ignore signup. (You should log out before trying to create a new account, user!)
-                    logger.debug("... Signout");
+                    console.log("... Signout");
                     return done(null, req.user);
                 }
 

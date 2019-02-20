@@ -14,6 +14,7 @@ var upload = multer({ dest: './public/upload/temp' });
 var async = require('async');
 
 var h2p = require('html2plaintext');
+var axios = require('axios');
 
 module.exports = function(app) {
     // POSTING SECTION =========================
@@ -61,8 +62,8 @@ module.exports = function(app) {
             // if any of the file processing produced an error, err would equal that error
             if( err ) {
               // One of the iterations produced an error.
-              console.log('A file failed to process');
-              console.log(err);
+              logger.info('A file failed to process');
+              logger.info(err);
               if(err ==='Only image files are allowed')
               {
                     res.status(422).json( { error: err });
@@ -103,11 +104,11 @@ module.exports = function(app) {
                     tags: itemTags.split(','),
                     geometry: req.user.company.geometry
                 });
-                console.log("Saving");
+                logger.info("Saving");
 
                 listing.save(function (err, image) {
                     if(err){
-                        console.log("TODO");
+                        logger.info("TODO");
                         res.status(500).json( { redirect: '/post' });
 
                     }else{
@@ -117,21 +118,23 @@ module.exports = function(app) {
             }
 
         });                  
-        console.log("Should not be here"); 
+        logger.info("Should not be here"); 
     });
 
 
-    app.post('/events/recommend', async (req, res)=>{
+    app.post('/events/recommend', upload.single('file'), async (req, res)=>{
         var tempPath = req.file.path;
         var ext = path.extname(req.file.originalname).toLowerCase();
         var fileStub = genItemString() + ext;
         var targetPath = path.resolve('./public/events/' + fileStub);
         var imgUrl = '/bucket/events/' + fileStub;
 
+        console.log(req.body);
+
         if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
             fs.ensureDir('./public/events')
             .then(() => {
-
+                console.log("Renaming");
                 fs.rename(tempPath, targetPath, function (err) {
                     if (err) throw err;
 
@@ -141,18 +144,46 @@ module.exports = function(app) {
                         from: req.body.startDate,
                         to: req.body.endDate,
                         description: req.body.description,
+                        venue: req.body.eventVenue,
+                        postal: req.body.eventpostal,                
                         filename: imgUrl,
                         url: req.body.eventUrl,
                     });
 
-                    activity.save(function (err, image) {
-                        res.redirect('/events');
+
+                     console.log("Getting coordinates");
+
+                    axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${req.body.eventpostal}&returnGeom=Y&getAddrDetails=N`)
+                    .then(response => {
+                        var coordinates = [];
+                        if(response.data.results)
+                        {
+                            console.log(response.data.results[0])
+                            coordinates.push(response.data.results[0].LONGITUDE);
+                            coordinates.push(response.data.results[0].LATITUDE);
+                        }
+                        else{
+                            //Push defaults
+                            coordinates.push(103.851959);
+                            coordinates.push(1.290270);
+                        }
+                        activity.geometry.coordinates = coordinates;
+                        console.log("Saving ");
+
+                        activity.save(function (err, image) {
+                            if(err){
+
+                            }
+                            else
+                            {
+                                res.redirect('/events');
+                            }
+                        });          
                     });
                 });
-
             })
             .catch(err => {
-                console.error(err)
+                logger.info(err)
             })
         } else {
             fs.unlink(tempPath, function () {
@@ -197,7 +228,7 @@ module.exports = function(app) {
 
             deleteFiles(deleteArray, function(err) {
                 if (err) {
-                  console.log(err);
+                    logger.info(err);
                 } else {
                     console.log('all images removed');
                     listing.remove();
@@ -206,7 +237,7 @@ module.exports = function(app) {
             });
 
         }else{
-            console.log("You don't own this!");
+            logger.info("You don't own this!");
             res.json(403, { error: 'You do not own this asset.' });
         }
     });

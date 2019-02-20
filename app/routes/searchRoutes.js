@@ -15,12 +15,12 @@ var client = new elasticsearch.Client({
 module.exports = function(app) {
     // SEARCH SECTION =========================
     app.get('/search',  async(req, res) =>{
-      logger.debug(req.query);
+      console.log(req.query);
 
       var body;
       if(req.query.d)
       {
-        logger.debug("Filter distance");
+        console.log("Filter distance");
         body = {
           sort : [
             {
@@ -43,7 +43,7 @@ module.exports = function(app) {
       }
       else
       {
-        logger.debug("Multi search");
+        console.log("Multi search");
         body= {
           query: {
             multi_match: {

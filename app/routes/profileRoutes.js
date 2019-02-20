@@ -59,18 +59,18 @@ module.exports = function(app) {
     });
 
     app.post('/settings', isLoggedIn, async(req, res) => {
-        logger.debug("Update");
+        console.log("Update");
 
         if (req.user.validPassword(req.body.oldpw))
         {
-            logger.debug("YES");
+            console.log("YES");
             req.user.local.password = req.user.generateHash(req.body.pw);
             req.user.save().then(()=>{
                 req.flash('passwordMsg', 'Password successfully updated!');
                 res.redirect('/settings');
             });
         }else{
-            logger.debug("No");
+            console.log("No");
             req.flash('passwordMsg', 'Your current password is incorrect.');
             res.redirect('/settings');
         }

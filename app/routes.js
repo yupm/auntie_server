@@ -20,7 +20,7 @@ module.exports = function(app, passport) {
 
       //  console.log(req.headers);
 
-        logger.debug(req.user._id + " " + req.headers);
+        //logger.debug(req.user._id + " " + req.headers);
 
         if(req.user){
             res.redirect('/dash');
