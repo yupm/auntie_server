@@ -16,7 +16,6 @@ if (!fs.existsSync(logDir)) {
 const dailyRotateFileTransport = new transports.DailyRotateFile({
     filename: `${logDir}/%DATE%-auntie.log`,
     datePattern: 'YYYY-MM-DD',
-    handleExceptions: true,
     format: format.combine(
         format.printf(
           info =>

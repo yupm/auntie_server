@@ -3,6 +3,8 @@ const boardRoutes = require('./routes/boardRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const publishRoutes = require('./routes/publishRoutes');
 const searchRoutes = require('./routes/searchRoutes');
+const eventRoutes = require('./routes/eventRoutes');
+
 const logger = require('./../config/logger')(__filename);
 
 module.exports = function(app, passport) {
@@ -11,6 +13,7 @@ module.exports = function(app, passport) {
     profileRoutes(app);
     publishRoutes(app);
     searchRoutes(app);
+    eventRoutes(app);
     
 // normal routes ===============================================================
     // show the home page (will also have our login links)
@@ -49,19 +52,6 @@ module.exports = function(app, passport) {
         });
     });
 
-    
-    // EVENTS SECTION =========================
-    app.get('/events', function(req, res) {
-        res.render('events.ejs', {
-            user : req.user
-        });
-    });
-
-    app.get('/events/recommend', function(req, res) {
-        res.render('recommend.ejs', {
-            user : req.user
-        });
-    });
 
 
     // LOGOUT ==============================

@@ -122,7 +122,7 @@ module.exports = function(app) {
     });
 
 
-    app.post('/events/recommend', upload.single('file'), async (req, res)=>{
+    app.post('/events/recommend', upload.single('efile'), async (req, res)=>{
         var tempPath = req.file.path;
         var ext = path.extname(req.file.originalname).toLowerCase();
         var fileStub = genItemString() + ext;
