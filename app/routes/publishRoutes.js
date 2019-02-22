@@ -145,7 +145,7 @@ module.exports = function(app) {
                         to: req.body.endDate,
                         description: req.body.description,
                         venue: req.body.eventVenue,
-                        postal: req.body.eventpostal,                
+                        postal: req.body.eventPostal,                
                         filename: imgUrl,
                         url: req.body.eventUrl,
                     });

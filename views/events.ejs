@@ -73,22 +73,28 @@
             <span class="mdc-fab__icon material-icons">add</span>
         </button>       
         <main role="main" class="container"> 
-            <div class="row"> 
+            <div class="row">                            
                 <div class="col-lg-9 col-md-12"> 
+                    <% if(events.length > 0) {%>
+                        <% for(var i=0; i < events.length; i++) { %>       
                     <div class="card flex-md-row box-shadow h-md-250 flex-row mb-2"> 
-                        <div style="width: auto; height: auto; max-width: 30%; vertical-align: middle; min-width: 160px; min-height: 160px;" class="d-flex align-items-center"> 
-                            <img src="https://images.unsplash.com/photo-1543363136-3fdb62e11be5?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjIwOTIyfQ" alt="Card image cap" class="img-fluid"> 
+                        <div style="width: auto; height: auto; max-width: 30%; vertical-align: middle; min-width: 160px; min-height: 160px; padding-left: 0; padding-right: 0;" class="d-flex align-items-center col-4"> 
+                            <img src=<%= events[i].filename %> alt="Event Poster" class="img-fluid ml-1"> 
                         </div>                         
                         <div class="card-body flex-column d-flex align-items-start"> 
-                            <h4 class="mb-0">Title</h4> 
+                            <h4 class="mb-0"><%= events[i].title %></h4> 
                             <div class="mb-1 text-muted d-flex justify-content-between align-self-stretch">
-                                <p>Company Name</p>
-                                <p>Date</p>
+                                <p><%= events[i].company %></p>
+                                <p><%= events[i].start %> till <%= events[i].end %></p>
                             </div>
-                            <p class="card-text mb-auto">Description</p> 
+                            <div class="card-text mb-auto"><%- events[i].description %></div> 
                         </div>                         
-                    </div>                     
-                </div>                 
+                    </div>      
+                        <% } %>
+                    <% } else { %> 
+    
+                    <% } %>                  
+                </div>         
                 <div class="col-md-3 offcanvas-collapse"> 
                     <h3>Filter results</h3> 
                     <p>Work in Progress!</p> 
