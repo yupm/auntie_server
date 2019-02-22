@@ -168,6 +168,11 @@ module.exports = function(app) {
                             coordinates.push(1.290270);
                         }
                         activity.geometry.coordinates = coordinates;
+
+                        const eurl = new Date().getTime().toString() + '-' + convertToSlug(req.body.title);      
+                        activity.url = eurl;
+                        console.log(eurl);
+
                         console.log("Saving ");
 
                         activity.save(function (err, image) {
