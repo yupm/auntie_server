@@ -13,28 +13,55 @@ module.exports = function(app) {
         console.log(req.query);
 
         var f = new Date();
-        var t = new Date();
-
+        var t = new Date().setFullYear(new Date().getFullYear() + 1);
+        let events;
 
         if(req.query.f)
         {
             f = new Date(req.query.f);
         }
+
         if(req.query.t)
         {
             t = new Date(req.query.t);
         }
 
-        if(req.query.loc)
-        {
-            
-        }
-        
         f.setDate(f.getDate()-1);
 
+        if(req.query.loc)
+        {
 
+            if(req.query.loc ==""){}
+            if(req.query.loc ==""){}
+            if(req.query.loc ==""){}
+            if(req.query.loc ==""){}
+            if(req.query.loc ==""){}
+            if(req.query.loc ==""){}
+            if(req.query.loc ==""){}
+            if(req.query.loc ==""){}
+            if(req.query.loc ==""){}
+            if(req.query.loc ==""){}
+            if(req.query.loc ==""){}
+            if(req.query.loc ==""){}
+            if(req.query.loc ==""){}
+            if(req.query.loc ==""){}
 
-        const events = await EventDb.find({ from: { $gte: d} });
+            events = await EventDb.aggregate([
+                {$geoNear: {
+                    near: { type: "Point", coordinates: [ lat, lng ] },
+                    key: "location",
+                    spherical: true,
+                    distanceField: "dist.calculated",
+                    query: { from: { $gte: f, $lt: t} }
+                 }},
+                {$sort: {"dist.calculated" :1, "date": 1}}
+            ]);
+        }
+        else
+        {
+            events = await EventDb.find({ from: { $gte: f, $lt: t} });
+        }
+        
 
         if(events != null){
             for(var i = 0 ; i < events.length; i ++){
