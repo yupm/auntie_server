@@ -3,7 +3,7 @@ mongod --replSet rs0 --port 27018 --bind_ip localhost --dbpath "C:\data\rs0db1"
 mongod --replSet rs0 --port 27019 --bind_ip localhost --dbpath "C:\data\rs0db2" 
 
 mongo-connector -m localhost:27017 -t localhost:9200 --fields title,description -d elastic2_doc_manager
-mongo-connector -c "C:\Users\Adobe\AppData\Local\Programs\Python\Python36\Lib\site-packages\config.json"
+mongo-connector -c "C:\Users\Adobe\Documents\Projects\auntie_server\guides\config.json"
 
 C:\Users\Adobe\Documents\kibana-5.6.14-windows-x86\bin
 
