@@ -153,10 +153,13 @@ module.exports = function(app) {
 
                      console.log("Getting coordinates");
 
-                    axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${req.body.eventpostal}&returnGeom=Y&getAddrDetails=N`)
+                    axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${req.body.eventPostal}&returnGeom=Y&getAddrDetails=N`)
                     .then(response => {
+                        console.log("Got response");
+                        console.log(response.data);
+
                         var coordinates = [];
-                        if(response.data.results)
+                        if(response.data.results !== undefined && response.data.results.length != 0)
                         {
                             console.log(response.data.results[0])
                             coordinates.push(response.data.results[0].LONGITUDE);
@@ -164,6 +167,7 @@ module.exports = function(app) {
                         }
                         else{
                             //Push defaults
+                            console.log("Push defaults");
                             coordinates.push(103.851959);
                             coordinates.push(1.290270);
                         }
@@ -171,9 +175,9 @@ module.exports = function(app) {
 
                         const eurl = new Date().getTime().toString() + '-' + convertToSlug(req.body.title);      
                         activity.url = eurl;
+                        console.log("Saving ");
                         console.log(eurl);
 
-                        console.log("Saving ");
 
                         activity.save(function (err, image) {
                             if(err){
