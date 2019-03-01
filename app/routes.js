@@ -53,6 +53,13 @@ module.exports = function(app, passport) {
     });
 
 
+    // POLICIES SECTION =========================
+    app.get('/policies', function(req, res) {
+        res.render('policies.ejs', {
+            user : req.user
+        });
+    });
+
 
     // LOGOUT ==============================
     app.get('/logout', function(req, res) {

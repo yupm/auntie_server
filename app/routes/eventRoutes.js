@@ -61,6 +61,7 @@ module.exports = function(app) {
                     spherical: true,
                     distanceField: "dist.calculated",
                     maxDistance: 10000,
+                    key: "geometry",
                     query: { from: {$lt: dateTill}, to: { $gte: dateFrom} }
                  }},       
             ]);
