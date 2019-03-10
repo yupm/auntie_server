@@ -1,0 +1,144 @@
+<!doctype html> 
+<html lang="en"> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+        <meta name="description" content=""> 
+        <meta name="author" content=""> 
+        <title>Recommend a deal!</title>         
+        <!-- Bootstrap core CSS -->         
+        <link href="../assets/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+        <!-- Custom styles for this template -->         
+        <link href="../assets/css/auntie.css" rel="stylesheet"> 
+        <script src="https://cdn.ckeditor.com/ckeditor5/11.2.0/classic/ckeditor.js"></script>
+        <style>
+        .ck-editor__editable {
+            min-height: 300px;
+        }
+        </style>
+    </head>     
+    <body class="bg-light"> 
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-danger"> 
+            <a class="navbar-brand mr-auto mr-lg-0" href="/">Auntie</a> 
+            <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas"> 
+                <span class="navbar-toggler-icon"></span> 
+            </button>             
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault"> 
+                <form class="form-inline my-2 my-lg-0 mt-lg-0 mb-lg-0 ml-lg-5" action="/search" method="get"> 
+                    <input name="q" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"> 
+                    <button class="btn my-2 my-sm-0 btn-light" type="submit">Search</button>                     
+                </form>                 
+                <ul class="navbar-nav ml-auto"> 
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/deals">Deals</a> 
+                    </li>                     
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/events">Events</a> 
+                    </li>                
+                    <% if (!user) { %>
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/register">Register</a> 
+                    </li>   
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="/login">Login</a> 
+                    </li>    
+                    <% }  %>                  
+                    <% if (user) { %>
+                        <li class="nav-item dropdown "> 
+                            <a class="nav-link dropdown-toggle" href="/dashboard" id="dropdown01" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Controls</a> 
+                            <div class="dropdown-menu" aria-labelledby="dropdown01"> 
+                                <a class="dropdown-item" href="/profile">Profile</a> 
+                                <a class="dropdown-item" href="/settings">Settings</a> 
+                                <a class="dropdown-item" href="/logout">Log out</a> 
+                            </div>                         
+                        </li>                         
+                    <% }  %>
+                </ul>                 
+            </div>             
+        </nav>        
+        <div class="container"> 
+            <div class="row" style="height: 30px;"></div>             
+        </div>         
+        <main role="main" class="container">
+            <div class="col-sm-8 offset-sm-2">
+                <h1>Recommend deal!</h1>
+                <form action="/deals/recommend" method="post" enctype="multipart/form-data">
+                    <div class="form-group">Deal Title
+                        <input type="text" class="form-control" name="title">
+                    </div>
+                    <div class="form-group">Company/Organization
+                        <input type="text" class="form-control" name="company">
+                    </div>
+                    <div class="form-group">From:
+                        <input class="form-control" type="date" name="startDate">
+                    </div>
+                    <div class="form-group">To:
+                        <input class="form-control" type="date" name="endDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea type="text" rows="6" class="form-control" name="description"  id="edesc"></textarea>
+                    </div>
+                    <div class="form-group">Venue
+                        <br>
+                        <input type="text" class="form-control" name="dealVenue">
+                    </div>
+                    <div class="form-group">Venue Postal Code
+                        <br>
+                        <input type="text" class="form-control" name="dealPostal">
+                    </div>
+                    <div class="form-group">Upload Poster
+                        <br>
+                        <input type="file" id="file" name="efile" accept="image/png, image/jpeg">
+                    </div>
+                    <div class="form-group">Promotional URL:
+                        <br>
+                        <input type="text" class="form-control" name="dealUrl">
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-danger">Post!</button>
+                </form>
+                <hr>
+            </div>
+        </main>       
+        <footer class="pt-5 text-muted text-center text-small my-5"> 
+            <p class="mb-1">&copy; 2019 Auntie.cc</p> 
+            <ul class="list-inline"> 
+                <li class="list-inline-item"> 
+                    <a href="/policies#privacy">Privacy</a> 
+                </li>                 
+                <li class="list-inline-item"> 
+                    <a href="/policies#terms">Terms</a> 
+                </li>                 
+                <li class="list-inline-item"> 
+                    <a href="/support">Support</a> 
+                </li>                 
+            </ul>             
+        </footer>         
+        <!-- Bootstrap core JavaScript
+    ================================================== -->         
+        <!-- Placed at the end of the document so the pages load faster -->         
+        <script src="../assets/js/jquery.min.js"></script>         
+        <script src="../assets/js/popper.js"></script>         
+        <script src="../assets/bootstrap/js/bootstrap.min.js"></script>          
+        <script>
+        $(document).ready(function () {
+            $('[data-toggle="offcanvas"]').on('click', function () {
+                $('.offcanvas-collapse').toggleClass('open');
+            });
+        });
+
+        let editor;
+        ClassicEditor
+            .create( document.querySelector( '#edesc' ), {
+                toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
+            })
+            .then( initEditor => {
+                editor = initEditor;
+            } )
+            .catch( error => {
+                    console.error( error );
+        } );
+        </script>         
+    </body>     
+</html>

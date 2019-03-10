@@ -4,6 +4,7 @@ const profileRoutes = require('./routes/profileRoutes');
 const publishRoutes = require('./routes/publishRoutes');
 const searchRoutes = require('./routes/searchRoutes');
 const eventRoutes = require('./routes/eventRoutes');
+const dealRoutes = require('./routes/dealRoutes');
 
 const logger = require('./../config/logger')(__filename);
 
@@ -14,6 +15,7 @@ module.exports = function(app, passport) {
     publishRoutes(app);
     searchRoutes(app);
     eventRoutes(app);
+    dealRoutes(app);
     
 // normal routes ===============================================================
     // show the home page (will also have our login links)
@@ -44,14 +46,6 @@ module.exports = function(app, passport) {
             user : req.user
         });
     });
-
-    // DEALS SECTION =========================
-    app.get('/deals', function(req, res) {
-        res.render('deals.ejs', {
-            user : req.user
-        });
-    });
-
 
     // POLICIES SECTION =========================
     app.get('/policies', function(req, res) {

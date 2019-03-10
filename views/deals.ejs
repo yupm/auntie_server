@@ -8,8 +8,24 @@
         <meta name="author" content=""> 
         <title>Auntie - Search for retail goodies</title>         
         <!-- Bootstrap core CSS -->         
-        <link href="../assets/bootstrap/css/bootstrap.css" rel="stylesheet"> 
-        <link href="../assets/css/auntie.css" rel="stylesheet"> 
+        <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet"> 
+        <!-- Custom styles for this template -->         
+        <link href="assets/css/auntie.css" rel="stylesheet"> 
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+        <style>.app-fab--absolute {
+                    position: fixed;
+                    bottom: 1rem;
+                    right: 1rem;
+                }
+
+                @media (min-width: 1024px) {
+                    .app-fab--absolute {
+                        bottom: 1.5rem;
+                        right: 1.5rem;
+                    }
+                }
+        </style>
     </head>     
     <body class="bg-light"> 
         <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-danger"> 
@@ -49,44 +65,123 @@
                     <% }  %>
                 </ul>                 
             </div>             
-        </nav>              
+        </nav>                   
         <div class="container"> 
             <div class="row" style="height: 30px;"></div>             
-        </div>         
+        </div>  
+        <button class="mdc-fab app-fab--absolute bg-danger" aria-label="add" onclick="location.href='/deals/recommend'">
+            <span class="mdc-fab__icon material-icons">add</span>
+        </button>       
         <main role="main" class="container"> 
-            <div class="row align-items-center justify-content-center" style="height: 100vh;">
-                <div class="col-md-4">
-                    <h3>Coming Soon!</h3> 
-                    <p>Work in progress. For feedback please email to Auntie.cc</p>
+            <div class="row">                            
+                <div class="col-lg-9 col-md-12"> 
+                    <% if(deals.length > 0) {%>
+                        <% for(var i=0; i < deals.length; i++) { %>       
+                    <div class="card flex-md-row box-shadow h-md-250 flex-row mb-2"> 
+                        <div style="width: auto; height: auto; max-width: 30%; vertical-align: middle; min-width: 160px; min-height: 160px; padding-left: 0; padding-right: 0;" class="d-flex align-items-center col-4"> 
+                            <img src=<%= deals[i].filename %> alt="Event Poster" class="img-fluid ml-1"> 
+                        </div>                         
+                        <div class="card-body flex-column d-flex align-items-start"> 
+                            <h4 class="mb-0"><%= deals[i].title %></h4> 
+                            <div class="mb-1 text-muted d-flex justify-content-between align-self-stretch">
+                                <p><%= deals[i].company %></p>
+                                <p><%= deals[i].start %> till <%= deals[i].end %></p>
+                            </div>
+                            <div class="card-text mb-auto"><%- deals[i].description %></div> 
+                        </div>                         
+                    </div>      
+                        <% } %>
+                    <% } else { %> 
+    
+                    <% } %>                  
+                </div>         
+                <div class="col-md-3 offcanvas-collapse"> 
+                    <div class="card">
+                        <form id="eventFilter" action="/deals" method="get" >
+                        <article class="card-group-item">
+                            <header class="card-header">
+                                <h6 class="title">Location </h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                        <select class="form-control" name="loc">
+                                            <option value="0">Select</option>
+                                            <option value="12">Central</option>
+                                            <option value="10">Central - Near Orchard</option>
+                                            <option value="09">Central - Orchard</option>
+                                            <option value="13">Central East</option>
+                                            <option value="20">Central North</option>
+                                            <option value="03">Central South</option>
+                                            <option value="21">Central West</option>
+                                            <option value="01">City - Business District</option>
+                                            <option value="15">East Coast</option>
+                                            <option value="18">Far East</option>
+                                            <option value="25">Far North</option>
+                                            <option value="24">Far North West</option>
+                                            <option value="22">Far West</option>
+                                            <option value="26">North</option>
+                                            <option value="28">North East</option>
+                                            <option value="23">North West</option>
+                                            <option value="04">South</option>
+                                            <option value="05">South West</option>
+                                            <option value="16">Upper East Coast</option>
+                                        </select>                     
+                                        <!-- form-check.// -->
+                                </div>             
+                                <!-- card-body.// -->
+                            </div>
+                        </article>     
+                        <!-- card-group-item.// -->
+                        <article class="card-group-item">
+                            <header class="card-header">
+                                <h6 class="date">Date </h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <div class="form-group">From:
+                                        <input class="form-control" type="date" name="f">
+                                    </div>
+                                    <div class="form-group">To:
+                                        <input class="form-control" type="date" name="t">
+                                    </div>
+                                </div>                                 
+                                <!-- card-body.// -->
+                            </div>
+                        </article>                         
+                        <hr>
+                        <article class="card-group-item">
+                            <div class="filter-content">
+                                <div class="text-center pt-auto pb-3">
+                                    <button class="btn-danger btn">Filter!</button>
+                                </div>
+                            </div>         
+                        </article>     
+                        <!-- card-group-item.// -->
+                        </form>
+                    </div>
                 </div>                 
             </div>             
         </main>         
-        <footer class="my-5 pt-5 text-muted text-center text-small"> 
-            <p class="mb-1">&copy; 2019 Auntie.cc</p> 
-            <ul class="list-inline"> 
-                <li class="list-inline-item"> 
-                    <a href="/policies#privacy">Privacy</a> 
-                </li>                 
-                <li class="list-inline-item"> 
-                    <a href="/policies#terms">Terms</a> 
-                </li>                 
-                <li class="list-inline-item"> 
-                    <a href="/support">Support</a> 
-                </li>                 
-            </ul>             
-        </footer>         
         <!-- Bootstrap core JavaScript
     ================================================== -->         
         <!-- Placed at the end of the document so the pages load faster -->         
         <script src="assets/js/jquery.min.js"></script>         
         <script src="assets/js/popper.js"></script>         
-        <script src="assets/bootstrap/js/bootstrap.min.js"></script>         
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script> 
+        <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>        
         <script>
         $(document).ready(function () {
             $('[data-toggle="offcanvas"]').on('click', function () {
                 $('.offcanvas-collapse').toggleClass('open');
             });
+
+            $("#eventFilter").submit(function() {
+                    $(this).find(":input").filter(function(){ return !this.value; }).attr("disabled", "disabled");
+                    return true; // ensure form still submits
+            });
+            $( "#eventFilter" ).find( ":input" ).prop( "disabled", false );
+
         });
     </script>         
     </body>     
-</html>   
+</html>

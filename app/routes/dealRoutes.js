@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const EventDb = mongoose.model('events');
+const DealDb = mongoose.model('deal');
 var h2p = require('html2plaintext');
 const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
@@ -7,15 +7,15 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 
 module.exports = function(app) {
     
-    // EVENTS SECTION =========================
-    app.get('/events', async (req, res) => {
+    // DEALS SECTION =========================
+    app.get('/deals', async (req, res) => {
 
         console.log(req.query);
 
         var dateFrom = new Date();
         var dateTill = new Date().setFullYear(new Date().getFullYear() + 1);
         dateTill = new Date(dateTill);
-        let events;
+        let deals;
 
         var coordinates = [ 103.851959, 1.290270];
 
@@ -55,7 +55,7 @@ module.exports = function(app) {
             
             console.log("dateTill is " + dateTill + " f is " + dateFrom);
 
-            events = await EventDb.aggregate([
+            deals = await DealDb.aggregate([
                 {$geoNear: {
                     near: { type: "Point", "coordinates": [ coordinates[0] , coordinates[1] ] },
                     spherical: true,
@@ -66,42 +66,43 @@ module.exports = function(app) {
                  }},       
             ]);
 
-            console.log(events);
+            console.log(deals);
         }
         else
         {
             console.log("t is " + dateTill + "f is " + dateFrom);
 
-            events = await EventDb.find({ from: {$lt: dateTill}, to: { $gte: dateFrom} });
+            deals = await DealDb.find({ from: {$lt: dateTill}, to: { $gte: dateFrom} });
         }
         
 
-        if(events != null){
-            for(var i = 0 ; i < events.length; i ++){
-                events[i].description = h2p(events[i].description);
-                if(events[i].description.length > 250 )
+        if(deals != null){
+            for(var i = 0 ; i < deals.length; i ++){
+                deals[i].description = h2p(deals[i].description);
+                if(deals[i].description.length > 250 )
                 {
-                    events[i].description = events[i].description.substring(0, 250);
-                    events[i].description = events[i].description + '...';
+                    deals[i].description = deals[i].description.substring(0, 250);
+                    deals[i].description = deals[i].description + '...';
                 }
-                events[i].start = monthNames[events[i].from.getMonth()] + ' ' + events[i].from.getDate()  ;
-                events[i].end = monthNames[events[i].to.getMonth()] + ' ' + events[i].to.getDate() ;
+                deals[i].start = monthNames[deals[i].from.getMonth()] + ' ' + deals[i].from.getDate()  ;
+                deals[i].end = monthNames[deals[i].to.getMonth()] + ' ' + deals[i].to.getDate() ;
             }
-            events.sort(function(a,b){
+            deals.sort(function(a,b){
                 // Turn your strings into dates, and then subtract them
                 // to get a value that is either negative, positive, or zero.
                 return new Date(a.from) - new Date(b.from);
             });
         }
+        console.log("rending deals");
 
-        res.render('events.ejs', {
+        res.render('deals.ejs', {
             user : req.user,
-            events
+            deals
         });
     });
 
-    app.get('/events/recommend', function(req, res) {
-        res.render('eventsrecommend.ejs', {
+    app.get('/deals/recommend', function(req, res) {
+        res.render('dealsrecommend.ejs', {
             user : req.user
         });
     });
