@@ -60,6 +60,12 @@ module.exports = function(app, passport) {
         });
     });
 
+    // SUPPORT SECTION =========================
+    app.get('/support', function(req, res) {
+        res.render('support.ejs', {
+            user : req.user
+        });
+    });
 
     // LOGOUT ==============================
     app.get('/logout', function(req, res) {
