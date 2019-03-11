@@ -18,4 +18,4 @@ var dealSchema = new Schema({
     }
 });
 
-mongoose.model('deal', dealSchema);
+mongoose.model('deals', dealSchema);

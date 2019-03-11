@@ -3,6 +3,8 @@ var path = require('path');
 var fs = require('fs-extra');
 
 const Events = mongoose.model('events');
+const Deals = mongoose.model('deals');
+
 const Item = mongoose.model('item');
 var Hashids = require('hashids');
 var hashids = new Hashids('A hashing function for Auntie.cc2019');
@@ -123,86 +125,300 @@ module.exports = function(app) {
 
 
     app.post('/events/recommend', upload.single('efile'), async (req, res)=>{
-        var tempPath = req.file.path;
-        var ext = path.extname(req.file.originalname).toLowerCase();
-        var fileStub = genItemString() + ext;
-        var targetPath = path.resolve('./public/events/' + fileStub);
-        var imgUrl = '/bucket/events/' + fileStub;
 
-        console.log(req.body);
-
-        if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
-            fs.ensureDir('./public/events')
-            .then(() => {
-                console.log("Renaming");
-                fs.rename(tempPath, targetPath, function (err) {
-                    if (err) throw err;
-
-                    const activity = new Events({
-                        title: req.body.title,
-                        company: req.body.company,
-                        from: req.body.startDate,
-                        to: req.body.endDate,
-                        description: req.body.description,
-                        venue: req.body.eventVenue,
-                        postal: req.body.eventPostal,                
-                        filename: imgUrl,
-                        url: req.body.eventUrl,
-                    });
-
-
-                     console.log("Getting coordinates");
-
-                    axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${req.body.eventPostal}&returnGeom=Y&getAddrDetails=N`)
-                    .then(response => {
-                        console.log("Got response");
-                        console.log(response.data);
-
-                        var coordinates = [];
-                        if(response.data.results !== undefined && response.data.results.length != 0)
-                        {
-                            console.log(response.data.results[0])
-                            coordinates.push(response.data.results[0].LONGITUDE);
-                            coordinates.push(response.data.results[0].LATITUDE);
-                        }
-                        else{
-                            //Push defaults
-                            console.log("Push defaults");
-                            coordinates.push(103.851959);
-                            coordinates.push(1.290270);
-                        }
-                        activity.geometry.coordinates = coordinates;
-
-                        const eurl = new Date().getTime().toString() + '-' + convertToSlug(req.body.title);      
-                        activity.url = eurl;
-                        console.log("Saving ");
-                        console.log(eurl);
-
-
-                        activity.save(function (err, image) {
-                            if(err){
-
-                            }
-                            else
-                            {
-                                res.redirect('/events');
-                            }
-                        });          
-                    });
-                });
-            })
-            .catch(err => {
-                logger.info(err)
-            })
-        } else {
-            fs.unlink(tempPath, function () {
-                if (err) throw err;
-                res.json(500, { error: 'Only image files are allowed.' });
+        if(!req.file)
+        {
+            if(!req.body.startDate){
+                req.body.startDate = new Date()
+            }
+            if(!req.body.endDate){
+                req.body.endDate = new Date().setMonth(new Date().getMonth() + 1);
+            }
+            const activity = new Events({
+                title: req.body.title,
+                company: req.body.company,
+                from: req.body.startDate,
+                to: req.body.endDate,
+                description: req.body.description,
+                venue: req.body.eventVenue,
+                postal: req.body.eventPostal,                
+                filename: imgUrl,
+                url: req.body.eventUrl,
             });
+
+
+             console.log("Getting coordinates");
+
+            axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${req.body.eventPostal}&returnGeom=Y&getAddrDetails=N`)
+            .then(response => {
+                console.log("Got response");
+                console.log(response.data);
+
+                var coordinates = [];
+                if(response.data.results !== undefined && response.data.results.length != 0)
+                {
+                    console.log(response.data.results[0])
+                    coordinates.push(response.data.results[0].LONGITUDE);
+                    coordinates.push(response.data.results[0].LATITUDE);
+                }
+                else{
+                    //Push defaults
+                    console.log("Push defaults");
+                    coordinates.push(103.851959);
+                    coordinates.push(1.290270);
+                }
+                activity.geometry.coordinates = coordinates;
+
+                const eurl = new Date().getTime().toString() + '-' + convertToSlug(req.body.title);      
+                activity.url = eurl;
+                console.log("Saving ");
+                console.log(eurl);
+
+                activity.save(function (err, image) {
+                    if(err){
+                        
+                    }
+                    else
+                    {
+                        res.redirect('/events');
+                    }
+                });          
+            });
+        }
+        else{
+            var tempPath = req.file.path;
+            var ext = path.extname(req.file.originalname).toLowerCase();
+            var fileStub = genItemString() + ext;
+            var targetPath = path.resolve('./public/events/' + fileStub);
+            var imgUrl = '/bucket/events/' + fileStub;
+    
+            console.log(req.body);
+    
+            if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
+                fs.ensureDir('./public/events')
+                .then(() => {
+                    console.log("Renaming");
+                    fs.rename(tempPath, targetPath, function (err) {
+                        if (err) throw err;
+                        
+                        if(!req.body.startDate){
+                            req.body.startDate = new Date()
+                        }
+                        if(!req.body.endDate){
+                            req.body.endDate = new Date().setMonth(new Date().getMonth() + 1);
+                        }
+                        const activity = new Events({
+                            title: req.body.title,
+                            company: req.body.company,
+                            from: req.body.startDate,
+                            to: req.body.endDate,
+                            description: req.body.description,
+                            venue: req.body.eventVenue,
+                            postal: req.body.eventPostal,                
+                            filename: imgUrl,
+                            url: req.body.eventUrl,
+                        });
+    
+    
+                         console.log("Getting coordinates");
+    
+                        axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${req.body.eventPostal}&returnGeom=Y&getAddrDetails=N`)
+                        .then(response => {
+                            console.log("Got response");
+                            console.log(response.data);
+    
+                            var coordinates = [];
+                            if(response.data.results !== undefined && response.data.results.length != 0)
+                            {
+                                console.log(response.data.results[0])
+                                coordinates.push(response.data.results[0].LONGITUDE);
+                                coordinates.push(response.data.results[0].LATITUDE);
+                            }
+                            else{
+                                //Push defaults
+                                console.log("Push defaults");
+                                coordinates.push(103.851959);
+                                coordinates.push(1.290270);
+                            }
+                            activity.geometry.coordinates = coordinates;
+    
+                            const eurl = new Date().getTime().toString() + '-' + convertToSlug(req.body.title);      
+                            activity.url = eurl;
+                            console.log("Saving ");
+                            console.log(eurl);
+    
+    
+                            activity.save(function (err, image) {
+                                if(err){
+    
+                                }
+                                else
+                                {
+                                    res.redirect('/events');
+                                }
+                            });          
+                        });
+                    });
+                })
+                .catch(err => {
+                    logger.info(err)
+                })
+            } else {
+                fs.unlink(tempPath, function () {
+                    if (err) throw err;
+                    res.json(500, { error: 'Only image files are allowed.' });
+                });
+            }
         }
     });
 
 
+    app.post('/deals/recommend', upload.single('efile'), async (req, res)=>{
+        if(!req.file)
+        {
+            if(!req.body.startDate){
+                req.body.startDate = new Date()
+            }
+
+            if(!req.body.endDate){
+                req.body.endDate = new Date().setMonth(new Date().getMonth() + 1);
+            }
+
+            const deal = new Deals({
+                title: req.body.title,
+                company: req.body.company,
+                from: req.body.startDate,
+                to: req.body.endDate,
+                description: req.body.description,
+                venue: req.body.dealLocation,
+                postal: req.body.dealPostal,                
+                filename: imgUrl,
+                url: req.body.eventUrl,
+            });
+
+            console.log("Getting coordinates");
+
+            axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${req.body.dealPostal}&returnGeom=Y&getAddrDetails=N`)
+            .then(response => {
+                console.log("Got response");
+                console.log(response.data);
+
+                var coordinates = [];
+                if(response.data.results !== undefined && response.data.results.length != 0)
+                {
+                    console.log(response.data.results[0])
+                    coordinates.push(response.data.results[0].LONGITUDE);
+                    coordinates.push(response.data.results[0].LATITUDE);
+                }
+                else{
+                    //Push defaults
+                    console.log("Push defaults");
+                    coordinates.push(103.851959);
+                    coordinates.push(1.290270);
+                }
+                deal.geometry.coordinates = coordinates;
+
+                const eurl = new Date().getTime().toString() + '-' + convertToSlug(req.body.title);      
+                deal.url = eurl;
+                console.log("Saving ");
+                console.log(eurl);
+
+
+                deal.save(function (err, image) {
+                    if(err){
+
+                    }
+                    else
+                    {
+                        res.redirect('/deals');
+                    }
+                });          
+            });
+        }
+        else
+        {
+            var tempPath = req.file.path;
+            var ext = path.extname(req.file.originalname).toLowerCase();
+            var fileStub = genItemString() + ext;
+            var targetPath = path.resolve('./public/deals/' + fileStub);
+            var imgUrl = '/bucket/deals/' + fileStub;
+    
+            if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
+                fs.ensureDir('./public/deals')
+                .then(() => {
+                    fs.rename(tempPath, targetPath, function (err) {
+                        if (err) throw err;
+    
+                        if(!req.body.startDate){
+                            req.body.startDate = new Date()
+                        }
+    
+                        if(!req.body.endDate){
+                            req.body.endDate = new Date().setMonth(new Date().getMonth() + 1);
+                        }
+    
+                        const deal = new Deals({
+                            title: req.body.title,
+                            company: req.body.company,
+                            from: req.body.startDate,
+                            to: req.body.endDate,
+                            description: req.body.description,
+                            venue: req.body.dealLocation,
+                            postal: req.body.dealPostal,                
+                            url: req.body.eventUrl,
+                        });
+    
+                        console.log("Getting coordinates");
+    
+                        axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${req.body.dealPostal}&returnGeom=Y&getAddrDetails=N`)
+                        .then(response => {
+                            console.log("Got response");
+                            console.log(response.data);
+    
+                            var coordinates = [];
+                            if(response.data.results !== undefined && response.data.results.length != 0)
+                            {
+                                console.log(response.data.results[0])
+                                coordinates.push(response.data.results[0].LONGITUDE);
+                                coordinates.push(response.data.results[0].LATITUDE);
+                            }
+                            else{
+                                //Push defaults
+                                console.log("Push defaults");
+                                coordinates.push(103.851959);
+                                coordinates.push(1.290270);
+                            }
+                            deal.geometry.coordinates = coordinates;
+    
+                            const eurl = new Date().getTime().toString() + '-' + convertToSlug(req.body.title);      
+                            deal.url = eurl;
+                            console.log("Saving ");
+                            console.log(eurl);
+    
+    
+                            deal.save(function (err, image) {
+                                if(err){
+    
+                                }
+                                else
+                                {
+                                    res.redirect('/deals');
+                                }
+                            });          
+                        });
+                    });
+                })
+                .catch(err => {
+                    logger.info(err)
+                })
+            } else {
+                fs.unlink(tempPath, function () {
+                    if (err) throw err;
+                    res.json(500, { error: 'Only image files are allowed.' });
+                });
+            }
+        }   
+    });
 
     // DASHBOARD SECTION =========================
     app.get('/dash', async(req, res)=>  {

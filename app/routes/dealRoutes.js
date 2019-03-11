@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const DealDb = mongoose.model('deal');
+const DealDb = mongoose.model('deals');
 var h2p = require('html2plaintext');
 const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
