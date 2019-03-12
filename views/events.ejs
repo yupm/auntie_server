@@ -25,6 +25,15 @@
                         right: 1.5rem;
                     }
                 }
+
+                a:link {
+                    color: 	#d9534f;
+                }
+
+                /* visited link */
+                a:visited {
+                    color: darkred;
+                }  
         </style>
     </head>     
     <body class="bg-light"> 
@@ -82,7 +91,7 @@
                             <img src=<%= events[i].filename %> alt="Event Poster" class="img-fluid ml-1"> 
                         </div>                         
                         <div class="card-body flex-column d-flex align-items-start"> 
-                            <h4 class="mb-0"><%= events[i].title %></h4> 
+                            <h4 class="mb-0"><a href='/events/promo/<%= events[i].url %>'><%= events[i].title %></a></h4> 
                             <div class="mb-1 text-muted d-flex justify-content-between align-self-stretch">
                                 <p><%= events[i].company %></p>
                                 <p><%= events[i].start %> till <%= events[i].end %></p>

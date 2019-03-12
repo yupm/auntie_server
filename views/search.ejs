@@ -92,9 +92,53 @@ a:visited {
                         <% } %>                    
                 </div>                 
                 <div class="col-md-3 offcanvas-collapse"> 
-                    <h3>Filter results</h3> 
-                    <p>Work in Progress!</p> 
-                </div>                 
+                    <div class="card">
+                        <form id="eventFilter" action="/search" method="get" >
+                        <article class="card-group-item">
+                            <header class="card-header">
+                                <h6 class="title">Location </h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                        <select class="form-control" name="loc">
+                                            <option value="0">Select</option>
+                                            <option value="12">Central</option>
+                                            <option value="10">Central - Near Orchard</option>
+                                            <option value="09">Central - Orchard</option>
+                                            <option value="13">Central East</option>
+                                            <option value="20">Central North</option>
+                                            <option value="03">Central South</option>
+                                            <option value="21">Central West</option>
+                                            <option value="01">City - Business District</option>
+                                            <option value="15">East Coast</option>
+                                            <option value="18">Far East</option>
+                                            <option value="25">Far North</option>
+                                            <option value="24">Far North West</option>
+                                            <option value="22">Far West</option>
+                                            <option value="26">North</option>
+                                            <option value="28">North East</option>
+                                            <option value="23">North West</option>
+                                            <option value="04">South</option>
+                                            <option value="05">South West</option>
+                                            <option value="16">Upper East Coast</option>
+                                        </select>                     
+                                        <!-- form-check.// -->
+                                </div>             
+                                <!-- card-body.// -->
+                            </div>
+                        </article>     
+                        <!-- card-group-item.// -->                     
+                        <hr>
+                        <article class="card-group-item">
+                            <div class="filter-content">
+                                <div class="text-center pt-auto pb-3">
+                                    <button class="btn-danger btn">Filter!</button>
+                                </div>
+                            </div>         
+                        </article>     
+                        <!-- card-group-item.// -->
+                        </form>
+                    </div>                </div>                 
             </div>             
         </main>         
         <!-- Bootstrap core JavaScript

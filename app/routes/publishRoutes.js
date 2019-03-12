@@ -438,6 +438,25 @@ module.exports = function(app) {
         });
     });
 
+    //DETAILS SECTION =========================
+    app.get('/events/promo/:url', async(req, res)=> {  
+        const promotion = await Events.findOne({ url: req.params.url});
+        res.render('promo.ejs', {
+            user : req.user,
+            promotion
+        });
+    });
+
+    app.get('/deals/promo/:url', async(req, res)=> {  
+        console.log("Getting deals details");
+        const promotion = await Deals.findOne({ url: req.params.url});
+        console.log(promotion);
+
+        res.render('promo.ejs', {
+            user : req.user,
+            promotion
+        });
+    });
 
     app.get('/delete/details/:url', isLoggedIn, async(req, res)=> {  
         const listing = await Item.findOne({ url: req.params.url});

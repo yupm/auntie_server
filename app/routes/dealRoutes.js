@@ -9,8 +9,8 @@ module.exports = function(app) {
     
     // DEALS SECTION =========================
     app.get('/deals', async (req, res) => {
+        console.log("rending deals");
 
-        console.log(req.query);
 
         var dateFrom = new Date();
         var dateTill = new Date().setFullYear(new Date().getFullYear() + 1);
@@ -93,7 +93,6 @@ module.exports = function(app) {
                 return new Date(a.from) - new Date(b.from);
             });
         }
-        console.log("rending deals");
 
         res.render('deals.ejs', {
             user : req.user,
