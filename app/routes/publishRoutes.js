@@ -18,6 +18,10 @@ var async = require('async');
 var h2p = require('html2plaintext');
 var axios = require('axios');
 
+const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
 module.exports = function(app) {
     // POSTING SECTION =========================
     app.get('/post', isLoggedIn, function(req, res) {
@@ -143,7 +147,7 @@ module.exports = function(app) {
                 venue: req.body.eventVenue,
                 postal: req.body.eventPostal,                
                 filename: imgUrl,
-                url: req.body.eventUrl,
+                outboundURL: req.body.eventUrl,
             });
 
 
@@ -216,7 +220,7 @@ module.exports = function(app) {
                             venue: req.body.eventVenue,
                             postal: req.body.eventPostal,                
                             filename: imgUrl,
-                            url: req.body.eventUrl,
+                            outboundURL: req.body.eventUrl,
                         });
     
     
@@ -293,7 +297,7 @@ module.exports = function(app) {
                 venue: req.body.dealLocation,
                 postal: req.body.dealPostal,                
                 filename: imgUrl,
-                url: req.body.eventUrl,
+                outboundURL: req.body.eventUrl,
             });
 
             console.log("Getting coordinates");
@@ -365,7 +369,7 @@ module.exports = function(app) {
                             description: req.body.description,
                             venue: req.body.dealLocation,
                             postal: req.body.dealPostal,                
-                            url: req.body.eventUrl,
+                            outboundURL: req.body.eventUrl,
                         });
     
                         console.log("Getting coordinates");
@@ -440,7 +444,12 @@ module.exports = function(app) {
 
     //DETAILS SECTION =========================
     app.get('/events/promo/:url', async(req, res)=> {  
-        const promotion = await Events.findOne({ url: req.params.url});
+        var promotion = await Events.findOne({ url: req.params.url});
+
+        promotion.start = monthNames[promotion.from.getMonth()] + ' ' + promotion.from.getDate()  ;
+        promotion.end = monthNames[promotion.to.getMonth()] + ' ' + promotion.to.getDate() ;
+
+
         res.render('promo.ejs', {
             user : req.user,
             promotion
@@ -448,9 +457,10 @@ module.exports = function(app) {
     });
 
     app.get('/deals/promo/:url', async(req, res)=> {  
-        console.log("Getting deals details");
-        const promotion = await Deals.findOne({ url: req.params.url});
-        console.log(promotion);
+        var promotion = await Deals.findOne({ url: req.params.url});
+
+        promotion.start = monthNames[promotion.from.getMonth()] + ' ' + promotion.from.getDate()  ;
+        promotion.end = monthNames[promotion.to.getMonth()] + ' ' + promotion.to.getDate() ;
 
         res.render('promo.ejs', {
             user : req.user,

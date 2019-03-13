@@ -11,6 +11,7 @@ var dealSchema = new Schema({
     geometry: { type: { type: String, default:'Point' }, coordinates: [Number] },
     filename: String,
     url: String,
+    outboundURL: String,
     poster: { type: Schema.Types.ObjectId, ref: 'user'},
     anon: {
         name: String,
