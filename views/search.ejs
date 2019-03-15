@@ -145,13 +145,10 @@
         <!-- Placed at the end of the document so the pages load faster -->         
         <script src="assets/js/jquery.min.js"></script>         
         <script src="assets/js/popper.js"></script>         
-        <script src="assets/bootstrap/js/bootstrap.min.js"></script>         
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>       
+        <script src="assets/js/auntie.js"></script>                     
         <script>
         $(document).ready(function () {
-            $('[data-toggle="offcanvas"]').on('click', function () {
-                $('.offcanvas-collapse').toggleClass('open');
-            });
-
             var query = window.location.search.substring(1);
             var qs = parse_query_string(query);
             console.log(qs);
