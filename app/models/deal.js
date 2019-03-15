@@ -19,4 +19,6 @@ var dealSchema = new Schema({
     }
 });
 
+dealSchema.index( { "geometry" : "2dsphere" } );
+
 mongoose.model('deals', dealSchema);

@@ -20,4 +20,6 @@ var eventSchema = new Schema({
 
 });
 
+eventSchema.index( { "geometry" : "2dsphere" } );
+
 mongoose.model('events', eventSchema);

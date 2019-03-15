@@ -109,21 +109,6 @@
         <script src="assets/js/popper.js"></script>         
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-        <script src="assets/js/auntie.js"></script>                
-        <script>
-        $(document).ready(function () {
-            var deleteLinks = document.querySelectorAll('.delete');
-
-            for (var i = 0; i < deleteLinks.length; i++) {
-            deleteLinks[i].addEventListener('click', function(event) {
-                event.preventDefault();
-                var choice = confirm(this.getAttribute('data-confirm'));
-                if (choice) {
-                    window.location.href = this.getAttribute('href');
-                }
-            });
-            }
-        });
-    </script>         
+        <script src="assets/js/auntie.js"></script>                       
     </body>     
 </html>
