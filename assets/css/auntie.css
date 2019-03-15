@@ -108,32 +108,3 @@ search-card {
         display: none;
     }
 }
-
-.app-fab--absolute {
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-}
-
-@media (min-width: 1024px) {
-    .app-fab--absolute {
-        bottom: 1.5rem;
-        right: 1.5rem;
-    }
-}
-
-a:link {
-    color: 	#d9534f;
-}
-
-/* visited link */
-a:visited {
-    color: darkred;
-} 
-
-.truncate {
-    width: 400px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    }
