@@ -155,6 +155,7 @@ if(pdesc){
             minHeight: 256,
             maxWidth: 4096,
             maxHeight: 4096,
+            fillColor: '#fff',
             imageSmoothingEnabled: true,
             imageSmoothingQuality: 'high',
         }).toBlob((blob) => {              

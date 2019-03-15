@@ -18,6 +18,9 @@ var async = require('async');
 var h2p = require('html2plaintext');
 var axios = require('axios');
 
+const sharp = require('sharp');
+sharp.cache(false);
+
 const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
@@ -44,13 +47,20 @@ module.exports = function(app) {
   
                 fs.ensureDir('./public/upload/' + folderPath)
                 .then(() => {
-                    fs.rename(tempPath, targetPath, function (err) {
-                        if (err) throw err;
-                        console.log("The target path is " + targetPath);                      
-                        console.log("The temp path is " + tempPath);
-                        var imgUrl = '/bucket/upload/' + filepath;        
-                        pathToUrls.push(imgUrl);
-                        callback();
+                    sharp(tempPath)
+                    .resize(1500, 1500, {
+                      fit: sharp.fit.inside,
+                      withoutEnlargement: true
+                    })
+                    .withMetadata()
+                    .toFile(targetPath)
+                    .then((info) => {
+                        fs.unlink(tempPath, function(err) {
+                            if (err) throw err;
+                            var imgUrl = '/bucket/upload/' + filepath;        
+                            pathToUrls.push(imgUrl);
+                            callback();
+                        });   
                     });
                 })
                 .catch(err => {
@@ -146,7 +156,6 @@ module.exports = function(app) {
                 description: req.body.description,
                 venue: req.body.eventVenue,
                 postal: req.body.eventPostal,                
-                filename: imgUrl,
                 outboundURL: req.body.eventUrl,
             });
 
@@ -195,16 +204,18 @@ module.exports = function(app) {
             var fileStub = genItemString() + ext;
             var targetPath = path.resolve('./public/events/' + fileStub);
             var imgUrl = '/bucket/events/' + fileStub;
-    
-            console.log(req.body);
-    
+
             if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
                 fs.ensureDir('./public/events')
                 .then(() => {
-                    console.log("Renaming");
-                    fs.rename(tempPath, targetPath, function (err) {
-                        if (err) throw err;
-                        
+                    sharp(tempPath)
+                    .resize(2000, 2000, {
+                      fit: sharp.fit.inside,
+                      withoutEnlargement: true
+                    })
+                    .withMetadata()
+                    .toFile(targetPath)
+                    .then((info) => {
                         if(!req.body.startDate){
                             req.body.startDate = new Date()
                         }
@@ -224,7 +235,7 @@ module.exports = function(app) {
                         });
     
     
-                         console.log("Getting coordinates");
+                        console.log("Getting coordinates");
     
                         axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${req.body.eventPostal}&returnGeom=Y&getAddrDetails=N`)
                         .then(response => {
@@ -251,17 +262,21 @@ module.exports = function(app) {
                             console.log("Saving ");
                             console.log(eurl);
     
-    
                             activity.save(function (err, image) {
-                                if(err){
-    
+                                if(err){ 
+                                    logger.info("Activity unable to save");
+                                    logger.info(err)
                                 }
                                 else
                                 {
-                                    res.redirect('/events');
+                                    fs.unlink(tempPath, function(err) {
+                                        if (err) throw err;
+                                        res.redirect('/events');
+                                    }); 
                                 }
                             });          
                         });
+
                     });
                 })
                 .catch(err => {
@@ -296,8 +311,7 @@ module.exports = function(app) {
                 description: req.body.description,
                 venue: req.body.dealLocation,
                 postal: req.body.dealPostal,                
-                filename: imgUrl,
-                outboundURL: req.body.eventUrl,
+                outboundURL: req.body.dealUrl,
             });
 
             console.log("Getting coordinates");
@@ -350,9 +364,15 @@ module.exports = function(app) {
             if (ext === '.png' || ext === '.jpg' || ext === '.jpeg' || ext === '.gif') {
                 fs.ensureDir('./public/deals')
                 .then(() => {
-                    fs.rename(tempPath, targetPath, function (err) {
-                        if (err) throw err;
-    
+
+                    sharp(tempPath)
+                    .resize(2000, 2000, {
+                      fit: sharp.fit.inside,
+                      withoutEnlargement: true
+                    })
+                    .withMetadata()
+                    .toFile(targetPath)
+                    .then((info) => {
                         if(!req.body.startDate){
                             req.body.startDate = new Date()
                         }
@@ -368,8 +388,9 @@ module.exports = function(app) {
                             to: req.body.endDate,
                             description: req.body.description,
                             venue: req.body.dealLocation,
-                            postal: req.body.dealPostal,                
-                            outboundURL: req.body.eventUrl,
+                            postal: req.body.dealPostal,    
+                            filename: imgUrl,            
+                            outboundURL: req.body.dealUrl,
                         });
     
                         console.log("Getting coordinates");
@@ -401,15 +422,20 @@ module.exports = function(app) {
     
     
                             deal.save(function (err, image) {
-                                if(err){
-    
+                                if(err){ 
+                                    logger.info("Deal unable to save");
+                                    logger.info(err)
                                 }
                                 else
                                 {
-                                    res.redirect('/deals');
+                                    fs.unlink(tempPath, function(err) {
+                                        if (err) throw err;
+                                        res.redirect('/deals');
+                                    }); 
                                 }
                             });          
                         });
+
                     });
                 })
                 .catch(err => {
