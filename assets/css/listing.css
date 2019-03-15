@@ -1,0 +1,75 @@
+
+#my-image,#use {
+    display: none;
+}
+
+.bootstrap-tagsinput {
+    width: 100%;
+}
+
+/* Post */
+.prodbtn {
+    width: 50px;
+}
+
+.ck-editor__editable {
+    min-height: 300px;
+}
+
+html, body {
+    padding-top: 20px;
+}
+
+[data-role="dynamic-fields"] > .p-specs + .p-specs {
+    margin-top: 0.5em;
+}
+
+[data-role="dynamic-fields"] > .p-specs [data-role="add"] {
+    display: none;
+}
+
+[data-role="dynamic-fields"] > .p-specs:last-child [data-role="add"] {
+    display: inline-block;
+}
+
+[data-role="dynamic-fields"] > .p-specs:last-child [data-role="remove"] {
+    display: none;
+}
+
+/* Promo/Details */
+
+.gallery-wrap .img-small-wrap .item-gallery {
+    width: 60px;
+    height: 60px;
+    border: 1px solid #ddd;
+    margin: auto;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.gallery-wrap .img-small-wrap {
+    text-align: center;
+}
+
+.gallery-wrap .img-small-wrap img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: zoom-in;
+}
+
+#specs {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#specs td,
+#specs th {
+    border: 1px solid #ddd;
+}
+
+#specs tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

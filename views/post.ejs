@@ -14,43 +14,8 @@
         <link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet"> 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.4.3/cropper.min.css" rel="stylesheet"> 
         <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+        <link href="assets/css/listing.css" rel="stylesheet"> 
         <script src="https://cdn.ckeditor.com/ckeditor5/11.2.0/classic/ckeditor.js"></script>
-        <style>
-            #my-image,#use {
-                display: none;
-            }
-
-            .prodbtn {
-                width: 50px;
-            }
-
-            .bootstrap-tagsinput {
-                width: 100%;
-            }
-            .ck-editor__editable {
-                min-height: 300px;
-            }
-
-            html, body {
-                padding-top: 20px;
-            }
-
-            [data-role="dynamic-fields"] > .p-specs + .p-specs {
-                margin-top: 0.5em;
-            }
-
-            [data-role="dynamic-fields"] > .p-specs [data-role="add"] {
-                display: none;
-            }
-
-            [data-role="dynamic-fields"] > .p-specs:last-child [data-role="add"] {
-                display: inline-block;
-            }
-
-            [data-role="dynamic-fields"] > .p-specs:last-child [data-role="remove"] {
-                display: none;
-            }
-        </style>
     </head>     
     <body class="bg-light"> 
         <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-danger"> 
@@ -250,7 +215,9 @@
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>         
         <script src="assets/js/jquery.flexdatalist.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.4.3/cropper.min.js"></script>
-        <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>         
+        <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>        
+        <script src="assets/js/auntie.js"></script>                
+ 
         <script>
         let editor;
         ClassicEditor
@@ -269,10 +236,6 @@
         var inputInfo = [];
 
         $(document).ready(function () {
-            $('[data-toggle="offcanvas"]').on('click', function () {
-                $('.offcanvas-collapse').toggleClass('open');
-            });
-
             $('[data-role="dynamic-fields"]').on('click', '[data-role="add"]', function (e) {
                 e.preventDefault();
                 var container = $(this).closest('[data-role="dynamic-fields"]');
@@ -289,7 +252,6 @@
             });
 
         });
-
 
 
         $('input:file').on('change', function() {
