@@ -80,3 +80,4 @@ assets/bootstrap/css/_pgbackup/*
 .DS_Store
 
 guides/oplog\.timestamp
+config/keys.js

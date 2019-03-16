@@ -12,6 +12,8 @@ var     path = require('path');
 const logger = require('./config/logger')(__filename);
 var expressWinston = require('express-winston');
 
+var keys = require('./config/keys');
+
 require('./app/models/post');
 require('./app/models/event');
 require('./app/models/deal');
@@ -46,7 +48,7 @@ app.set('view engine', 'ejs'); // set up ejs for templating
 
 // required for passport
 app.use(session({
-    secret: 'dear@untie$helpMeFinD!MyS7277', // session secret
+    secret: keys.sessionSecret, // session secret
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({mongooseConnection: mongoose.connection })
