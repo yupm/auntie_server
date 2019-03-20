@@ -1,7 +1,0 @@
-2019-02-20 10:09:28,279 [ALWAYS] mongo_connector.connector:50 - Starting mongo-connector version: 3.1.1
-2019-02-20 10:09:28,280 [ALWAYS] mongo_connector.connector:50 - Python version: 3.6.7 (v3.6.7:6ec5cf24b7, Oct 20 2018, 13:35:33) [MSC v.1900 64 bit (AMD64)]
-2019-02-20 10:09:28,280 [ALWAYS] mongo_connector.connector:50 - Platform: Windows-10-10.0.17134-SP0
-2019-02-20 10:09:28,280 [ALWAYS] mongo_connector.connector:50 - pymongo version: 3.7.2
-2019-02-20 10:09:28,281 [WARNING] mongo_connector.connector:170 - MongoConnector: Can't find C:\Users\Adobe\Documents\Projects\auntie_server\guides\oplog.timestamp, attempting to create an empty progress log
-2019-02-20 10:09:28,311 [ALWAYS] mongo_connector.connector:50 - Source MongoDB version: 4.0.1
-2019-02-20 10:09:28,312 [ALWAYS] mongo_connector.connector:50 - Target DocManager: mongo_connector.doc_managers.elastic2_doc_manager version: 1.0.0
