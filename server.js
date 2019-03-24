@@ -4,7 +4,7 @@
 // get all the tools we need
 var express  = require('express');
 var app      = express();
-var port     = process.env.PORT || 80;
+var port     = process.env.PORT || 8081;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
@@ -35,14 +35,15 @@ var configDB = require('./config/database.js');
 
 
 // Certificate
-const privateKey = fs.readFileSync('/home/ubuntu/ssl/cfauntie.key.pem', 'utf8');
-const certificate = fs.readFileSync('/home/ubuntu/ssl/cfauntie.cert.pem', 'utf8');
+//const privateKey = fs.readFileSync('/home/ubuntu/ssl/cfauntie.key.pem', 'utf8');
+//const certificate = fs.readFileSync('/home/ubuntu/ssl/cfauntie.cert.pem', 'utf8');
 
+/*
 const credentials = {
 	key: privateKey,
 	cert: certificate
 };
-
+*/
 
 
 // configuration ===============================================================
@@ -72,7 +73,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
-
+app.disable('x-powered-by');
 
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
@@ -80,15 +81,16 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 // launch ======================================================================
 // Starting both http & https servers
 const httpServer = http.createServer(app);
-const httpsServer = https.createServer(credentials, app);
+//const httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(80, () => {
-	console.log('HTTP Server running on port 80');
+httpServer.listen(port, () => {
+	console.log('HTTP Server running on port' + port);
 });
 
+/*
 httpsServer.listen(443, () => {
 	console.log('HTTPS Server running on port 443');
-});
+});*/
 
 
 
