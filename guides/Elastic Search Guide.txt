@@ -24,6 +24,7 @@ GET _search
 
 GET /_cat/indices?v
 
+curl -GET localhost:9200/_cat/indices?v
 
 curl -XDELETE localhost:9200/_all
 

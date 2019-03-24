@@ -12,9 +12,7 @@ var     path = require('path');
 const logger = require('./config/logger')(__filename);
 var expressWinston = require('express-winston');
 
-const fs = require('fs');
 const http = require('http');
-const https = require('https');
 
 var keys = require('./config/keys');
 
@@ -24,7 +22,6 @@ require('./app/models/deal');
 require('./app/models/item');
 require('./app/models/company');
 
-
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
@@ -32,19 +29,6 @@ var session      = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 var configDB = require('./config/database.js');
-
-
-// Certificate
-//const privateKey = fs.readFileSync('/home/ubuntu/ssl/cfauntie.key.pem', 'utf8');
-//const certificate = fs.readFileSync('/home/ubuntu/ssl/cfauntie.cert.pem', 'utf8');
-
-/*
-const credentials = {
-	key: privateKey,
-	cert: certificate
-};
-*/
-
 
 // configuration ===============================================================
 mongoose.connect(configDB.url, { useNewUrlParser: true }); // connect to our database
@@ -59,7 +43,7 @@ app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/bucket', express.static(path.join(__dirname, './public')));
 app.use('/assets', express.static(path.join(__dirname, '/assets')));
-
+app.use('/', express.static(path.join(__dirname, './site')));
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 
@@ -84,7 +68,7 @@ const httpServer = http.createServer(app);
 //const httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(port, () => {
-	console.log('HTTP Server running on port' + port);
+	console.log('HTTP Server running on port ' + port);
 });
 
 /*
