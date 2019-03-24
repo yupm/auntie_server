@@ -67,27 +67,30 @@
         <div class="container"> 
             <div class="row" style="height: 30px;"></div>             
         </div>  
-        <button class="mdc-fab app-fab--absolute bg-danger" aria-label="add" onclick="location.href='/events/recommend'">
-            <span class="mdc-fab__icon material-icons">add</span>
-        </button>       
         <main role="main" class="container"> 
             <div class="row">                            
                 <div class="col-lg-9 col-md-12"> 
                     <% if(events.length > 0) {%>
                         <% for(var i=0; i < events.length; i++) { %>       
-                    <div class="card flex-md-row box-shadow h-md-250 flex-row mb-2"> 
-                        <div style="width: auto; height: auto; max-width: 30%; vertical-align: middle; min-width: 160px; min-height: 160px; padding-left: 0; padding-right: 0;" class="d-flex align-items-center col-4"> 
-                            <img src=<%= events[i].filename %> alt="Event Poster" class="img-fluid ml-1"> 
-                        </div>                         
-                        <div class="card-body flex-column d-flex align-items-start"> 
-                            <h4 class="mb-0"><a href='/events/promo/<%= events[i].url %>'><%= events[i].title %></a></h4> 
-                            <div class="mb-1 text-muted d-flex justify-content-between align-self-stretch">
-                                <p><%= events[i].company %></p>
-                                <p><%= events[i].start %> till <%= events[i].end %></p>
-                            </div>
-                            <div class="card-text mb-auto"><%- events[i].description %></div> 
-                        </div>                         
-                    </div>      
+                            <div class="card box-shadow h-md-250 mb-2 flex-md-row flex-column"> 
+                                <div class="row">
+                                    <div class="align-items-center d-flex col-md-4 pr-md-0 justify-content-center"> 
+                                        <img src=<%= events[i].filename %> alt="Event Poster" class="img-fluid"> 
+                                    </div>
+                                    <div  class="card-body flex-column d-flex align-items-start col-md-8 ml-1 mr-1 ml-md-0 mr-md-0"> 
+                                        <h4 class="mb-0"><a href='/events/promo/<%= events[i].url %>'><%= events[i].title %></a></h4> 
+                                        <div class="mb-1 text-muted d-flex justify-content-between align-self-stretch">
+                                            <div class="row w-100">
+                                                <p class="col-md-6"><%= events[i].company %></p>
+                                                <p class="pr-md-4 col-md-6 text-left text-md-right"><%= events[i].start %> till <%= events[i].end %></p>
+                                            </div>
+                                        </div>
+                                        <div class="card-text mb-auto">
+                                            <div class="card-text mb-auto"><%- events[i].description %></div> 
+                                        </div>
+                                    </div>
+                                </div>     
+                            </div>   
                         <% } %>
                     <% } else { %> 
     
@@ -159,7 +162,10 @@
                     </div>
                 </div>                 
             </div>             
-        </main>         
+        </main>       
+        <button class="mdc-fab app-fab--absolute bg-danger" aria-label="add" onclick="location.href='/events/recommend'">
+            <span class="mdc-fab__icon material-icons">add</span>
+        </button>         
         <!-- Bootstrap core JavaScript
     ================================================== -->         
         <!-- Placed at the end of the document so the pages load faster -->         
