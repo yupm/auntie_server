@@ -79,13 +79,13 @@
                                             <div class="form-group row"> 
                                                 <label for="username" class="col-4 col-form-label">Change Password</label>                                                 
                                                 <div class="col-8"> 
-                                                    <input id="pw" name="pw" placeholder="Password" class="form-control here" type="password"> 
+                                                    <input id="pw" name="pw" placeholder="Password" class="form-control here" type="password"  minlength="8" required> 
                                                 </div>                                                 
                                             </div>
                                             <div class="form-group row"> 
                                                 <label for="username" class="col-4 col-form-label">Old Password</label>                                                 
                                                 <div class="col-8"> 
-                                                    <input id="oldpw" name="oldpw" placeholder="Password" class="form-control here" type="password"> 
+                                                    <input id="oldpw" name="oldpw" placeholder="Password" class="form-control here" type="password" required> 
                                                 </div>                                                 
                                             </div>  
                                             <% if (message.length > 0) { %>

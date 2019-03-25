@@ -84,8 +84,10 @@ module.exports = function(app) {
                     events[i].description = events[i].description.substring(0, 250);
                     events[i].description = events[i].description + '...';
                 }
-                events[i].start = monthNames[events[i].from.getMonth()] + ' ' + events[i].from.getDate()  ;
-                events[i].end = monthNames[events[i].to.getMonth()] + ' ' + events[i].to.getDate() ;
+                events[i].start = monthNames[events[i].from.getMonth()] 
+                                    + ' ' + events[i].from.getDate() + ' ' + events[i].from.getFullYear();
+                events[i].end = monthNames[events[i].to.getMonth()] 
+                                    + ' ' + events[i].to.getDate() + ' ' + events[i].to.getFullYear();
             }
             events.sort(function(a,b){
                 // Turn your strings into dates, and then subtract them
