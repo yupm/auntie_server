@@ -82,3 +82,5 @@ assets/bootstrap/css/_pgbackup/*
 guides/oplog\.timestamp
 config/keys.js
 nohup.out
+
+mongo-connector.log*
